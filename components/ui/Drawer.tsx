@@ -12,8 +12,9 @@ export const Drawer = ({ children }: Props) => {
                 {children}
             </div>
             <div className="drawer-side">
-                <label htmlFor="my-drawer" className="drawer-overlay"></label>
-                <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
+                <label htmlFor="my-drawer" className="drawer-overlay backdrop-blur-sm" ></label>
+
+                <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content backdrop-filter">
 
                     <li><a>Sidebar Item 1</a></li>
                     <li><a>Sidebar Item 2</a></li>
