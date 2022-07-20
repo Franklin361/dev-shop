@@ -31,8 +31,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="twitter:creator" content="@Frankomtz361" />
         <meta name="twitter:image" content="" />
 
-        <title>Dev Shop</title>
         <link rel="shortcut icon" href="https://res.cloudinary.com/dnxchppfm/image/upload/c_scale,w_991/v1658294651/Shopping_perspective_matte_ytgkal.webp" type="image/x-icon" />
+        <title>Dev Shop</title>
       </Head>
 
       <Component {...pageProps} />
