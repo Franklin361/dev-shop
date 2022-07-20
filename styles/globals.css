@@ -4,6 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('./animations.css');
+
 * {
   margin: 0;
   padding: 0;
@@ -13,4 +15,8 @@
 
 p re {
   font-family: 'Montserrat', sans-serif;
+}
+
+.drawer-toggle:checked~.drawer-side>.drawer-overlay {
+  animation: fadeIn .5s ease-in-out;
 }
