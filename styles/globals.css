@@ -17,6 +17,25 @@ p re {
   font-family: 'Montserrat', sans-serif;
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .drawer-toggle:checked~.drawer-side>.drawer-overlay {
   animation: fadeIn .5s ease-in-out;
+}
+
+.indicator_slide {
+  cursor: pointer;
+  padding: 4px;
+  text-align: center;
+  border: 1px #666 solid;
+  margin: 0 4px;
+}
+
+.indicator_slide.active {
+  color: #fff;
+  background: #666;
 }
