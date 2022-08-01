@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 
+import 'react-slideshow-image/dist/styles.css'
 import '../styles/globals.css'
 
 // TODO: update meta tags

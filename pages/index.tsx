@@ -1,8 +1,7 @@
 import type { NextPage } from 'next'
-import { Overlay, ShopLayout } from '../components'
+import { Overlay, ProductCard, ShopLayout } from '../components'
 import { ILayoutShop } from '../interfaces'
 import { initialData } from '../database/products';
-import Image from 'next/image';
 
 const headProps: ILayoutShop = {
   imgUrl: '',
@@ -26,20 +25,13 @@ const Home: NextPage = () => {
 
       </header>
 
-      <section className='grid grid-cols-3 gap-14 place-items-center my-14'>
+      <section className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-14 place-items-center my-14 lg:px-0 px-5'>
         {
-          initialData.products.slice(0, 11).map(({ images, slug, title }) => (
-            <div key={slug} className="rounded w-full h-96">
-              <figure className='w-full fade-in h-full block relative bg-neutral shadow-xl shadow-black/50' >
-                <Image
-                  src={`/products/${images[0]}`}
-                  loading='lazy'
-                  layout="fill"
-                  className='object-cover rounded fade-in'
-                  alt={title}
-                />
-              </figure>
-            </div>
+          initialData.products.slice(0, 11).map(product => (
+            <ProductCard
+              key={product.slug}
+              product={product}
+            />
           ))
         }
       </section>
