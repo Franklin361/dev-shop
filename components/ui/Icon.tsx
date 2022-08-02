@@ -1,6 +1,6 @@
 import { NameIcon, PropsIcon } from "../../interfaces"
 
-import { AiOutlineCloseCircle, AiOutlineDelete, AiOutlineMan, AiOutlineMenu, AiOutlineMinusCircle, AiOutlinePlusCircle, AiOutlineSearch, AiOutlineShoppingCart, AiOutlineUser, AiOutlineWoman } from "react-icons/ai";
+import { AiOutlineCloseCircle, AiOutlineCreditCard, AiOutlineDelete, AiOutlineMan, AiOutlineMenu, AiOutlineMinusCircle, AiOutlinePlusCircle, AiOutlineSearch, AiOutlineShoppingCart, AiOutlineUser, AiOutlineWoman } from "react-icons/ai";
 
 export const Icon = ({ name, ...props }: PropsIcon): JSX.Element => {
 
@@ -15,6 +15,7 @@ export const Icon = ({ name, ...props }: PropsIcon): JSX.Element => {
         'less': <AiOutlineMinusCircle {...props} />,
         'close': <AiOutlineCloseCircle {...props} />,
         'delete': <AiOutlineDelete {...props} />,
+        'credit': <AiOutlineCreditCard {...props} />,
     }
 
 

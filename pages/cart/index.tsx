@@ -25,7 +25,7 @@ const CartPage = () => {
 
                     <button
                         className="btn btn-block btn-primary"
-                        onClick={() => router.push(`cart/address/`)}
+                        onClick={() => router.push(`checkout/address/`)}
                     >Checkout</button>
                 </section>
 
