@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 
 import 'react-slideshow-image/dist/styles.css'
 import '../styles/globals.css'
+import { SWRConfig } from 'swr'
 
 // TODO: update meta tags
 
@@ -36,7 +37,14 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Dev Shop</title>
       </Head>
 
-      <Component {...pageProps} />
+      <SWRConfig
+        value={{
+          // refreshInterval: 3000
+          fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
+        }}
+      >
+        <Component {...pageProps} />
+      </SWRConfig>
     </>
   )
 }

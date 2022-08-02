@@ -1,7 +1,8 @@
 import type { NextPage } from 'next'
-import { Overlay, ProductCard, ShopLayout } from '../components'
+import { HeaderHome, ProductList, ShopLayout } from '../components'
+import { Loading } from '../components/ui/Loading'
+import { useProducts } from '../hooks'
 import { ILayoutShop } from '../interfaces'
-import { initialData } from '../database/products';
 
 const headProps: ILayoutShop = {
   imgUrl: '',
@@ -11,32 +12,24 @@ const headProps: ILayoutShop = {
 
 // TODO: DOWNSIZE  IMAGE HEADER
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
+
+  const { error, isLoading, data } = useProducts('/products')
+
+  if (error) return <div>failed to load</div>
+
+
   return (
     <ShopLayout {...headProps}>
-      <header className=' bg-[url("https://i.pinimg.com/736x/e7/b1/e2/e7b1e231979b4603ff0489f372998e74.jpg")] bg-center bg-no-repeat bg-cover min-h-[60vh] flex justify-center items-center flex-col gap-5 relative rounded-b-lg overflow-hidden'>
 
-        <h1 className='font-normal text-8xl z-20'>
-          <span className='font-extrabold'>Dev</span>
-          Shop
-        </h1>
-        <h2 className='z-20 text-2xl'> Found all the products you need! </h2>
-        <Overlay />
-
-      </header>
-
-      <section className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-14 place-items-center my-14 lg:px-0 px-5'>
-        {
-          initialData.products.slice(0, 11).map(product => (
-            <ProductCard
-              key={product.slug}
-              product={product}
-            />
-          ))
-        }
-      </section>
+      <HeaderHome />
+      {
+        isLoading
+          ? <Loading label='Loading products ...' textClass='my-5 block text-3xl text-accent font-bold fade-in infinite' />
+          : <ProductList data={data.products} />
+      }
     </ShopLayout>
   )
 }
 
-export default Home
+export default HomePage

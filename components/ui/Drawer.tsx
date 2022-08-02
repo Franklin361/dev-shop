@@ -16,8 +16,17 @@ export const Drawer = ({ children }: Props) => {
 
                 <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content backdrop-filter">
 
-                    <li><a>Sidebar Item 1</a></li>
-                    <li><a>Sidebar Item 2</a></li>
+
+
+                    <h5>Search</h5>
+                    <hr />
+                    <input type="text" placeholder="Name" className="input input-bordered input-secondary w-full text-lg my-5" />
+
+                    <h5 className="md:hidden block">Gender</h5>
+                    <hr className="mb-5 md:hidden block" />
+                    <li className="md:hidden block"><a>Men</a></li>
+                    <li className="md:hidden block"><a>Women</a></li>
+                    <li className="md:hidden block"><a>Kids</a></li>
 
                 </ul>
             </div>

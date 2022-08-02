@@ -5,6 +5,7 @@
 @tailwind utilities;
 
 @import url('./animations.css');
+@import url('./loading.css');
 
 * {
   margin: 0;
@@ -38,4 +39,11 @@ p re {
 .indicator_slide.active {
   color: #fff;
   background: #666;
+}
+
+.infinite {
+  animation-iteration-count: infinite;
+  animation-duration: 0.8s;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
 }
