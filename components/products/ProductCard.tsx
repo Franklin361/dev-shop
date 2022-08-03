@@ -26,8 +26,7 @@ export const ProductCard = ({ product }: Props) => {
                 className="rounded w-full h-96 cursor-pointer"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                // onClick={() => router.push(`/product/${product.slug}`)}
-                onClick={() => router.push(`/product/slug`)}
+                onClick={() => router.push(`/product/${product.slug}`)}
             >
                 <figure className='w-full fade-in h-full block relative bg-neutral shadow-xl shadow-black/50' >
                     <Image
@@ -48,3 +47,5 @@ export const ProductCard = ({ product }: Props) => {
         </div>
     )
 }
+
+

@@ -1,10 +1,24 @@
+import { useRouter } from "next/router"
+import { useState } from "react"
 import { Element } from "../../interfaces"
+import { Icon } from "./Icon"
 
 interface Props {
     children: Element
 }
 
 export const Drawer = ({ children }: Props) => {
+
+    const { asPath, push } = useRouter()
+
+    const [searchText, setSearchText] = useState('');
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchText.trim().length === 0) return
+        push(`/search/${searchText}`)
+    }
+
     return (
         <div className="drawer">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
@@ -18,15 +32,30 @@ export const Drawer = ({ children }: Props) => {
 
 
 
-                    <h5>Search</h5>
-                    <hr />
-                    <input type="text" placeholder="Name" className="input input-bordered input-secondary w-full text-lg my-5" />
+                    <h5 className="md:hidden block">Search</h5>
+                    <hr className="md:hidden block" />
+                    <form onSubmit={handleSearch} className="center gap-2">
+                        <input
+                            type="text" placeholder="Name"
+                            className="md:hidden block input input-bordered input-primary w-full text-lg my-5"
+                            onChange={e => setSearchText(e.target.value)}
+                            value={searchText}
+                        />
+                        <button className="btn btn-primary"><Icon name="search" className="text-xl cursor-pointer" /></button>
+                    </form>
 
                     <h5 className="md:hidden block">Gender</h5>
                     <hr className="mb-5 md:hidden block" />
-                    <li className="md:hidden block"><a>Men</a></li>
-                    <li className="md:hidden block"><a>Women</a></li>
-                    <li className="md:hidden block"><a>Kids</a></li>
+
+                    <li className="md:hidden block mb-2">
+                        <a className={`${asPath === '/category/men' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/category/men')}>Men</a>
+                    </li>
+                    <li className="md:hidden block mb-2">
+                        <a className={`${asPath === '/category/women' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/category/women')}>Women</a>
+                    </li>
+                    <li className="md:hidden block mb-2">
+                        <a className={`${asPath === '/category/kid' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/category/kid')}>Kids</a>
+                    </li>
 
                 </ul>
             </div>
