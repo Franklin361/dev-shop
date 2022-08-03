@@ -1,9 +1,15 @@
+import { GetServerSideProps } from 'next'
 import { ItemCounter, ProductSlideShow, ShopLayout, SizeSelector } from "../../components"
-import { initialData } from "../../database/products"
+import { dbProducts } from "../../database"
+import { IProduct } from '../../interfaces'
 
-const product = initialData.products[0];
 
-const ProductPage = () => {
+interface Props {
+  product: IProduct
+}
+
+const ProductPage = ({ product }: Props) => {
+
   return (
     <ShopLayout
       imgUrl={product.images[0]}
@@ -38,3 +44,43 @@ const ProductPage = () => {
   )
 }
 export default ProductPage
+
+
+
+import { GetStaticPaths } from 'next'
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const slugs = await dbProducts.getAllProductsSlug();
+
+  return {
+    paths: slugs.map(({ slug }) => ({
+      params: {
+        slug
+      }
+    })),
+    fallback: "blocking"
+  }
+}
+
+import { GetStaticProps } from 'next'
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const { slug } = ctx.params as { slug: string }
+  const product = await dbProducts.getProductsBySlug(slug)
+
+  if (!product) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {
+      product
+    },
+    revalidate: 86400
+  }
+}
