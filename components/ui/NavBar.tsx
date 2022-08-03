@@ -1,7 +1,11 @@
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { Icon } from "./"
 
 export const NavBar = () => {
+
+    const { asPath } = useRouter()
+
     return (
         <nav className="bg-black/90 shadow-2xl shadow-black/70 p-5 sticky top-0 left-0 z-30 flex justify-center items-center">
             <div className="flex-1 flex">
@@ -12,19 +16,19 @@ export const NavBar = () => {
 
             <div className="md:flex hidden items-center flex-1 justify-center gap-5">
                 <Link href='/category/men'>
-                    <div className="flex flex-1 py-2 px-3 justify-center items-center gap-2 cursor-pointer rounded hover:bg-white/20">
+                    <div className={`flex flex-1 py-2 px-3 justify-center items-center gap-2 cursor-pointer rounded ${asPath === '/category/men' ? 'bg-accent text-black' : ' hover:bg-white/20'}`}>
                         <Icon name="men" className="text-3xl" />
                         <span className="select-none">Men</span>
                     </div>
                 </Link>
                 <Link href='/category/women'>
-                    <div className="flex flex-1 py-2 px-3 justify-center items-center gap-2 cursor-pointer rounded hover:bg-white/20">
+                    <div className={`flex flex-1 py-2 px-3 justify-center items-center gap-2 cursor-pointer rounded ${asPath === '/category/women' ? 'bg-accent text-black' : ' hover:bg-white/20'}`}>
                         <Icon name="women" className="text-3xl" />
                         <span className="select-none">Women</span>
                     </div>
                 </Link>
                 <Link href='/category/kid'>
-                    <div className="flex flex-1 py-2 px-3 justify-center items-center gap-2 cursor-pointer rounded hover:bg-white/20">
+                    <div className={`flex flex-1 py-2 px-3 justify-center items-center gap-2 cursor-pointer rounded ${asPath === '/category/kid' ? 'bg-accent text-black' : ' hover:bg-white/20'}`}>
                         <Icon name="kid" className="text-3xl" />
                         <span className="select-none">Kid</span>
                     </div>
