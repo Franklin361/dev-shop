@@ -1,4 +1,4 @@
-import { CartList, Icon, OrderSummary, ShopLayout } from "../../components"
+import { CartList, Chip, Icon, OrderSummary, ShopLayout } from "../../components"
 import { useRouter } from 'next/router';
 
 
@@ -14,14 +14,16 @@ const OrderPage = () => {
 
                 <section>
                     <h1 className="text-4xl font-bold">Order: <span className="text-info">ABC123</span></h1>
-                    <div className="badge badge-error badge-outline my-5 badge-lg flex gap-3">
-                        <Icon name='credit' className="text-xl" />
-                        <span className="font-bold">This order has not yet been paid</span>
-                    </div>
-                    {/* <div className="badge badge-success badge-outline my-5 badge-lg flex gap-3">
-                        <Icon name='credit' className="text-xl" />
-                        <span className="font-bold">This order has already been paid</span>
-                    </div> */}
+
+                    <Chip
+                        icon="credit"
+                        label="This order has not yet been paid"
+                    />
+                    {/* <Chip
+                        icon="credit"
+                        label="This order has already been paid"
+                        type="badge-success"
+                    /> */}
                     <CartList />
                 </section>
 
