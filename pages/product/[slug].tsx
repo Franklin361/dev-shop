@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next'
 import { ItemCounter, ProductSlideShow, ShopLayout, SizeSelector } from "../../components"
 import { dbProducts } from "../../database"
-import { IProduct } from '../../interfaces'
+import { ICartProduct, IProduct } from '../../interfaces'
 
 
 interface Props {
@@ -10,13 +10,46 @@ interface Props {
 
 const ProductPage = ({ product }: Props) => {
 
+  useGetCartCookie()
+  const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
+    quantity: 1,
+    image: product.images[0],
+    price: product.price,
+    slug: product.slug,
+    title: product.title,
+    gender: product.gender,
+    _id: product._id,
+  })
+  const addToCart = useCartStore(state => state.addProductToCart)
+  const { push } = useRouter()
+
+  const handleSelectSize = (size: ISize) => setTempCartProduct(prev => ({
+    ...prev,
+    size
+  }))
+
+  const handleChangeQuantity = (quantity: number) => {
+    if (quantity === 0) return
+    if (quantity === product.inStock + 1) return
+    setTempCartProduct(prev => ({
+      ...prev,
+      quantity
+    }))
+  }
+
+  const handleAddToCart = () => {
+    if (!tempCartProduct.size) return;
+    addToCart(tempCartProduct)
+    push('/cart')
+  }
+
   return (
     <ShopLayout
       imgUrl={product.images[0]}
       pageDesc={product.description}
       title={`Dev-Shop | ${product.title.slice(0, 20)}`}
     >
-      <section className="mt-12 max-w-6xl mx-auto grid md:grid-cols-2 grid-cols-1 gap-16 lg:px-0 px-5">
+      <section className="my-12 max-w-6xl mx-auto grid md:grid-cols-2 grid-cols-1 gap-16 md:px-0 px-5">
 
         <ProductSlideShow images={product.images} />
 
@@ -28,13 +61,22 @@ const ProductPage = ({ product }: Props) => {
 
           <div className="flex gap-2 flex-col">
             <p className="text-xl text-gray-400">Amount</p>
-            <ItemCounter />
+            <ItemCounter onChangeQuantity={handleChangeQuantity} quantity={tempCartProduct.quantity} />
+
             <p className="text-xl text-gray-400">Size</p>
-            <SizeSelector sizes={product.sizes} selectedSize={'L'} />
+            <SizeSelector
+              sizes={product.sizes}
+              selectedSize={tempCartProduct.size}
+              onSelectSize={handleSelectSize}
+            />
           </div>
 
-          <button className="btn btn-primary btn-circle btn-block" disabled={(product.inStock === 0)} >
-            {product.inStock === 0 ? 'No product' : 'Add to cart'}
+          <button
+            className={`btn btn-primary btn-circle btn-block ${!tempCartProduct.size ? 'pointer-events-none' : ''}`}
+            disabled={(product.inStock === 0)}
+            onClick={handleAddToCart}
+          >
+            {product.inStock === 0 ? 'Not avaible' : tempCartProduct.size ? 'Add to cart' : 'Select a size'}
           </button>
 
           <p>{product.description}</p>
@@ -63,6 +105,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 import { GetStaticProps } from 'next'
+import { useState } from 'react';
+import { ISize } from '../../interfaces/product';
+import { useRouter } from 'next/router'
+import { useCartStore } from '../../store'
+import { useGetCartCookie } from '../../hooks'
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { slug } = ctx.params as { slug: string }

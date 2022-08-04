@@ -1,10 +1,12 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { useCartStore } from "../../store"
 import { Icon, ButtonSearch } from "./"
 
 export const NavBar = () => {
 
     const { asPath } = useRouter()
+    const numberOfItems = useCartStore(state => state.numberOfItems)
 
     return (
         <nav className="bg-black/90 shadow-2xl shadow-black/70 p-5 sticky top-0 left-0 z-30 flex justify-center items-center md:pr-10 pr-5">
@@ -41,7 +43,11 @@ export const NavBar = () => {
 
                 <Link href='/cart'>
                     <div className="indicator rounded-full p-2 hover:bg-white/20 cursor-pointer">
-                        <span className="indicator-item  badge badge-md badge-accent font-bold select-none">9+</span>
+                        <span className="indicator-item  badge badge-md badge-accent font-bold select-none">
+                            {
+                                numberOfItems >= 10 ? '+9' : numberOfItems
+                            }
+                        </span>
                         <Icon name="cart" className="text-3xl" />
                     </div>
                 </Link>

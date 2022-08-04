@@ -1,10 +1,11 @@
 import { ISize } from "../../interfaces";
 
 interface Props {
-    selectedSize: ISize;
+    selectedSize?: ISize;
     sizes: ISize[]
+    onSelectSize: (size: ISize) => void
 }
-export const SizeSelector = ({ selectedSize, sizes }: Props) => {
+export const SizeSelector = ({ selectedSize, sizes, onSelectSize }: Props) => {
     return (
         <div className="flex gap-3 flex-wrap">
             {
@@ -12,6 +13,7 @@ export const SizeSelector = ({ selectedSize, sizes }: Props) => {
                     <button
                         key={size}
                         className={`btn ${selectedSize === size ? 'btn-secondary select-none pointer-events-none' : ''}`}
+                        onClick={() => onSelectSize(size)}
                     >
                         {size}
                     </button>

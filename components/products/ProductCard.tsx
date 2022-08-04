@@ -2,6 +2,7 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { useMemo, useState } from "react"
 import { IProduct } from "../../interfaces"
+import { Chip, Icon } from "../ui"
 
 interface Props {
     product: IProduct
@@ -23,11 +24,20 @@ export const ProductCard = ({ product }: Props) => {
     return (
         <div className="w-full h-full">
             <div
-                className="rounded w-full h-96 cursor-pointer"
+                className="rounded w-full h-96 cursor-pointer relative"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 onClick={() => router.push(`/product/${product.slug}`)}
             >
+                {
+                    product.inStock === 0 &&
+                    <Chip
+                        className="gap-1 absolute top-0 z-10 left-3"
+                        icon="less"
+                        label="Not available"
+                        isOutline={false}
+                    />
+                }
                 <figure className='w-full fade-in h-full block relative bg-neutral shadow-xl shadow-black/50' >
                     <Image
                         src={productImg}

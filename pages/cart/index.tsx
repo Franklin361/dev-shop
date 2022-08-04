@@ -4,7 +4,9 @@ import { useRouter } from 'next/router';
 
 
 const CartPage = () => {
+
     const router = useRouter()
+
     return (
         <ShopLayout
             title="Dev-Shop | Cart"
@@ -14,6 +16,7 @@ const CartPage = () => {
 
                 <section>
                     <h1 className="text-4xl font-bold">Cart <span className="text-gray-400 text-base font-normal">(products in cart so far...)</span></h1>
+
                     <CartList isEdit />
                 </section>
 

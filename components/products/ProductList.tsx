@@ -8,7 +8,7 @@ interface Props {
 export const ProductList = ({ data = [] }: Props) => {
     return (
 
-        <section className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-14 place-items-center my-14 lg:px-0 px-5'>
+        <section className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-14 place-items-center my-14  px-5'>
             {
                 data.slice(0, 5).map(product => (
                     <ProductCard
