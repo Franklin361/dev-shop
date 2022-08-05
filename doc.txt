@@ -1,0 +1,5 @@
+loading while image load
+https://blog.logrocket.com/progressive-image-loading-react-tutorial/
+
+loading while image load whit NEXT JS
+https://dev.to/codegino/nextjs-features-to-handle-image-loading-and-error-state-1lj7

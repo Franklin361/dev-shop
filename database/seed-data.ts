@@ -1,4 +1,30 @@
-import { SeedData } from "../interfaces";
+import bcryptjs from 'bcryptjs'
+
+import { IRole, ISize, IType } from "../interfaces";
+
+export interface IProductSeed {
+    description: string;
+    images: string[];
+    inStock: number;
+    price: number;
+    sizes: ISize[];
+    slug: string;
+    tags: string[];
+    title: string;
+    type: IType;
+    gender: 'men' | 'women' | 'kid' | 'unisex'
+}
+
+export interface IUserSeed {
+    name: string
+    email: string
+    password: string
+    role: IRole
+}
+export interface SeedData {
+    products: IProductSeed[],
+    users: IUserSeed[]
+}
 
 export const initialData: SeedData = {
     products: [
@@ -30,7 +56,7 @@ export const initialData: SeedData = {
             type: 'shirts',
             tags: ['jacket'],
             title: "Men's Quilted Shirt Jacket",
-            gender: 'men'
+            gender: 'men',
         },
 
         {
@@ -784,5 +810,20 @@ export const initialData: SeedData = {
             title: "Kids Corp Jacket",
             gender: 'kid'
         },
+    ],
+    users: [
+        {
+            email: 'correo@correo.com',
+            name: 'user1',
+            role: 'client',
+            password: bcryptjs.hashSync('123456')
+        },
+        {
+            email: 'correo2@correo2.com',
+            name: 'user2',
+            role: 'admin',
+            password: bcryptjs.hashSync('123456')
+        },
     ]
 }
+

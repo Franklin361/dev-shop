@@ -17,6 +17,3 @@ export interface IProduct {
 export type ISize = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL';
 export type IType = 'shirts' | 'pants' | 'hoodies' | 'hats';
 
-export interface SeedData {
-    products: IProduct[],
-}
