@@ -20,7 +20,7 @@ const LoginPage = () => {
                     </div>
                     <button className="btn mt-5 btn-accent">Log in</button>
 
-                    <p className="text-end">Don't you have an account?
+                    <p className="text-end">Do not you have an account?
                         <span className="link link-secondary font-bold" onClick={() => router.push('/auth/register')}> Click here to get it</span></p>
                 </form>
             </section>
