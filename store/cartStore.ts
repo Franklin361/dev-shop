@@ -1,26 +1,31 @@
 import create from 'zustand'
 import Cookie from 'js-cookie'
 
+
 import { calculateOrderSummary } from '../utils'
 
-import { ICartProduct, ISize } from '../interfaces'
-
+import { ICartProduct, InfoAddress, ISize } from '../interfaces'
 
 interface CartState {
+    isLoaded: boolean
     numberOfItems: number
     subtotal: number
     taxRate: number
     tax: number
     total: number
     cart: ICartProduct[]
+    shippingAddress?: InfoAddress
     addProductToCart: (product: ICartProduct) => void
     updateCartQuantity: (product: ICartProduct) => void
     addProductsFromStorage: (products: ICartProduct[]) => void
+    addShippingAddress: (shippingAddress: InfoAddress) => void
     deleteProductFromCart: (id: string, size: ISize) => void
 }
 
+
 export const useCartStore = create<CartState>(set => ({
 
+    isLoaded: false,
     numberOfItems: 0,
     subtotal: 0,
     taxRate: 0,
@@ -67,7 +72,23 @@ export const useCartStore = create<CartState>(set => ({
         return { ...state, cart: newCart as ICartProduct[], ...calculateOrderSummary(newCart as ICartProduct[]) }
     }),
 
-    addProductsFromStorage: (products: ICartProduct[]) => set(state => ({ ...state, cart: products, ...calculateOrderSummary(products) })),
+    addProductsFromStorage: (products: ICartProduct[]) => set(state => ({ ...state, cart: products, ...calculateOrderSummary(products), isLoaded: true })),
+
+    addShippingAddress: (shippingAddress: InfoAddress) => set(state => {
+        Cookie.set('name', shippingAddress.name)
+        Cookie.set('lastName', shippingAddress.lastName)
+        Cookie.set('address', shippingAddress.address)
+        Cookie.set('address2', shippingAddress.address2 || '')
+        Cookie.set('zip', shippingAddress.zip)
+        Cookie.set('phone', shippingAddress.phone)
+        Cookie.set('country', shippingAddress.country)
+        Cookie.set('city', shippingAddress.city)
+
+        return {
+            ...state,
+            shippingAddress
+        }
+    }),
 
     updateCartQuantity: (product: ICartProduct) => set(state => {
         const cart = state.cart.map(item => {

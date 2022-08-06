@@ -1,10 +1,16 @@
 import { CartList, OrderSummary, ShopLayout } from "../../components"
 import { useRouter } from 'next/router';
+import { useCartStore } from "../../store";
+import { countries } from '../../utils/countries';
 
 
 
 const SummaryPage = () => {
     const router = useRouter()
+    const { shippingAddress, numberOfItems } = useCartStore(({ shippingAddress, numberOfItems }) => ({ shippingAddress, numberOfItems }))
+
+    if (!shippingAddress) return null
+
     return (
         <ShopLayout
             title="Dev-Shop | Order Summary"
@@ -18,7 +24,7 @@ const SummaryPage = () => {
                 </section>
 
                 <section className="shadow-black shadow-2xl rounded-xl bg-neutral-focus p-5 flex flex-col gap-5 md:sticky md:top-32 h-fit">
-                    <h4 className="text-4xl font-bold md:text-start text-center">Summary</h4>
+                    <h4 className="text-4xl font-bold md:text-start text-center">Summary <span className="font-bold text-sm">{numberOfItems} {numberOfItems >= 1 ? 'product' : 'products'} </span> </h4>
                     <hr className="border border-gray-500" />
 
                     <div className="flex flex-col gap-1">
@@ -29,11 +35,11 @@ const SummaryPage = () => {
                                 onClick={() => router.push(`/checkout/address`)}
                                 className="link link-secondary">Edit Address</span>
                         </div>
-                        <span>Franklin Martinez Lucas Hernandez</span>
-                        <span>323 Real de Palmas</span>
-                        <span>Ottawa, HYA 238</span>
-                        <span>Canada</span>
-                        <span>+5281234654</span>
+                        <span>{shippingAddress.name} {shippingAddress.lastName}</span>
+                        <span>{shippingAddress.address}, {shippingAddress.address2 ? shippingAddress.address2 : ''}</span>
+                        <span>{shippingAddress.city}, {shippingAddress.zip}</span>
+                        <span>{countries.find(item => item.code === shippingAddress.country)?.name}</span>
+                        <span>{shippingAddress.phone}</span>
                     </div>
 
                     <hr className="border border-gray-500" />

@@ -10,7 +10,6 @@ interface Props {
 
 const ProductPage = ({ product }: Props) => {
 
-  useGetCartCookie()
   const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
     quantity: 1,
     image: product.images[0],
@@ -109,7 +108,6 @@ import { useState } from 'react';
 import { ISize } from '../../interfaces/product';
 import { useRouter } from 'next/router'
 import { useCartStore } from '../../store'
-import { useGetCartCookie } from '../../hooks'
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { slug } = ctx.params as { slug: string }

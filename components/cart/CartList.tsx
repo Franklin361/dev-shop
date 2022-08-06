@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { ItemCounter, Icon } from "../";
 import { useRouter } from 'next/router';
 import { useCartStore } from '../../store';
-import { useGetCartCookie } from '../../hooks';
 import { ICartProduct } from '../../interfaces';
 
 
@@ -15,7 +14,6 @@ interface Props {
 
 export const CartList = ({ isEdit = false }: Props) => {
 
-    useGetCartCookie()
     const productsInCart = useCartStore(state => state.cart)
     const deleteProductFromCart = useCartStore(state => state.deleteProductFromCart)
     const updateCartQuantity = useCartStore(state => state.updateCartQuantity)
@@ -58,7 +56,7 @@ export const CartList = ({ isEdit = false }: Props) => {
                                             quantity={product.quantity}
                                             onChangeQuantity={(value) => handleQuantity(product, value)}
                                         />
-                                        : <b className='text-info'>3 items</b>
+                                        : <b className='text-info'>{product.quantity} {product.quantity <= 1 ? 'item' : 'items'}</b>
                                 }
                             </div>
 

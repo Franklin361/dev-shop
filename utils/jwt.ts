@@ -13,6 +13,8 @@ export const isValidToken = async (token: string): Promise<string> => {
 
     if (!seed) throw new Error("There is not seed for jwt");
 
+    if (token.length <= 10) return Promise.reject('Token no valid')
+
     return new Promise((resolve, reject) => {
 
         try {

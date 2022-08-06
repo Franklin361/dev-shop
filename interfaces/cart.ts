@@ -10,3 +10,14 @@ export interface ICartProduct {
     gender: 'men' | 'women' | 'kid' | 'unisex'
     _id: string;
 }
+
+export interface InfoAddress {
+    name: string
+    lastName: string
+    address: string
+    address2?: string
+    zip: string
+    phone: string
+    country: string
+    city: string
+}

@@ -1,11 +1,20 @@
 import { CartList, OrderSummary, ShopLayout } from "../../components"
 import { useRouter } from 'next/router';
+import { useCartStore } from '../../store';
+import { useEffect } from 'react';
 
 
 
 const CartPage = () => {
 
     const router = useRouter()
+    const { isLoaded, cart } = useCartStore(({ isLoaded, cart }) => ({ isLoaded, cart }))
+
+    useEffect(() => {
+        if (isLoaded && cart.length === 0) router.replace('/cart/empty')
+    }, [isLoaded, cart, router])
+
+    if (cart.length === 0) return <></>
 
     return (
         <ShopLayout
@@ -28,7 +37,7 @@ const CartPage = () => {
 
                     <button
                         className="btn btn-block btn-primary"
-                        onClick={() => router.push(`checkout/address/`)}
+                        onClick={() => router.push(`/checkout/address/`)}
                     >Checkout</button>
                 </section>
 

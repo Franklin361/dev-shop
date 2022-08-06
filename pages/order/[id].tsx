@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 
 const OrderPage = () => {
     const router = useRouter()
+
     return (
         <ShopLayout
             title="Dev-Shop | Order Summary 123654"
