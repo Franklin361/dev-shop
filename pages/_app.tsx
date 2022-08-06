@@ -1,9 +1,13 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 
+import { SWRConfig } from 'swr'
+import { Element } from '../interfaces'
+
+import { AuthProvider } from '../context'
+
 import 'react-slideshow-image/dist/styles.css'
 import '../styles/globals.css'
-import { SWRConfig } from 'swr'
 
 // TODO: update meta tags
 
@@ -37,16 +41,29 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Dev Shop</title>
       </Head>
 
-      <SWRConfig
-        value={{
-          // refreshInterval: 3000
-          fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
-        }}
-      >
+      <AppState>
         <Component {...pageProps} />
-      </SWRConfig>
+      </AppState>
+
     </>
   )
 }
 
 export default MyApp
+
+
+
+export const AppState = ({ children }: { children: Element }) => {
+  return (
+
+    <SWRConfig
+      value={{
+        fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
+      }}
+    >
+      <AuthProvider>
+        {children}
+      </AuthProvider>
+    </SWRConfig>
+  )
+}
