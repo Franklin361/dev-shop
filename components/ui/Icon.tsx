@@ -1,13 +1,15 @@
 import { NameIcon, PropsIcon } from "../../interfaces"
 
-import { AiOutlineCloseCircle, AiOutlineCreditCard, AiOutlineDelete, AiOutlineMan, AiOutlineMenu, AiOutlineMinusCircle, AiOutlinePlusCircle, AiOutlineSearch, AiOutlineShoppingCart, AiOutlineUser, AiOutlineWoman } from "react-icons/ai";
+import { AiOutlineCloseCircle, AiOutlineCreditCard, AiOutlineDelete, AiOutlineFile, AiOutlineLogin, AiOutlineLogout, AiOutlineMan, AiOutlineMenu, AiOutlineMinusCircle, AiOutlinePlusCircle, AiOutlineSearch, AiOutlineShoppingCart, AiOutlineSnippets, AiOutlineTags, AiOutlineTeam, AiOutlineUser, AiOutlineWoman } from "react-icons/ai";
+
+import { TbMoodKid } from 'react-icons/tb'
 
 export const Icon = ({ name, ...props }: PropsIcon): JSX.Element => {
 
     const selectedIcon: { [key in NameIcon]: JSX.Element } = {
         'men': <AiOutlineMan {...props} />,
         'women': <AiOutlineWoman {...props} />,
-        'kid': <AiOutlineUser {...props} />,
+        'kid': <TbMoodKid {...props} />,
         'cart': <AiOutlineShoppingCart {...props} />,
         'menu': <AiOutlineMenu {...props} />,
         'search': <AiOutlineSearch {...props} />,
@@ -16,6 +18,13 @@ export const Icon = ({ name, ...props }: PropsIcon): JSX.Element => {
         'close': <AiOutlineCloseCircle {...props} />,
         'delete': <AiOutlineDelete {...props} />,
         'credit': <AiOutlineCreditCard {...props} />,
+        'log-in': <AiOutlineLogin {...props} />,
+        'log-out': <AiOutlineLogout {...props} />,
+        'profile': <AiOutlineUser {...props} />,
+        'order': <AiOutlineFile {...props} />,
+        'orders': <AiOutlineSnippets {...props} />,
+        'products': <AiOutlineTags {...props} />,
+        'users': <AiOutlineTeam {...props} />,
     }
 
 

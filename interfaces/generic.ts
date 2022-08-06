@@ -8,7 +8,10 @@ export interface ILayoutShop {
     imgUrl?: string
 }
 
-export type NameIcon = 'men' | 'women' | 'kid' | 'search' | 'cart' | 'menu' | 'plus' | 'less' | 'close' | 'delete' | 'credit'
+export type NameIcon = 'men' | 'women' |
+    'kid' | 'search' | 'cart' | 'menu' | 'plus' |
+    'less' | 'close' | 'delete' | 'credit' | 'log-in'
+    | 'log-out' | 'profile' | 'order' | 'products' | 'users' | 'orders'
 export interface PropsIcon extends IconBaseProps {
     name: NameIcon;
 }

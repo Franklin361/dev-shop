@@ -43,11 +43,13 @@ export const NavBar = () => {
 
                 <Link href='/cart'>
                     <div className="indicator rounded-full p-2 hover:bg-white/20 cursor-pointer">
-                        <span className="indicator-item  badge badge-md badge-accent font-bold select-none">
-                            {
-                                numberOfItems >= 10 ? '+9' : numberOfItems
-                            }
-                        </span>
+                        {
+                            numberOfItems !== 0 && <span className="indicator-item  badge badge-md badge-accent font-bold select-none">
+                                {
+                                    numberOfItems >= 10 ? '+9' : numberOfItems
+                                }
+                            </span>
+                        }
                         <Icon name="cart" className="text-3xl" />
                     </div>
                 </Link>

@@ -1,2 +1,2 @@
 export * from './useProducts'
-export * from './useGetCartCookie'
+export * from './useContextAuth'
