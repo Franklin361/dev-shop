@@ -23,7 +23,14 @@ const LoginPage = () => {
         // TODO: show alert
         if (!isLoginCorrect) return alert('Log-in failed 🚨')
 
-        router.replace('/')
+        const destination = router.query.p?.toString() || '/'
+        router.replace(destination)
+    }
+
+    const handleGoToRegister = () => {
+        const destination = router.query.p?.toString()
+        const url = destination ? `/auth/register?p=${destination}` : '/auth/register'
+        router.push(url)
     }
 
     return (
@@ -71,7 +78,7 @@ const LoginPage = () => {
                     <button className="btn mt-5 btn-accent" type="submit">Log in</button>
 
                     <p className="text-end">Do not you have an account?
-                        <span className="link link-secondary font-bold" onClick={() => router.push('/auth/register')}> Click here to get it</span></p>
+                        <span className="link link-secondary font-bold" onClick={handleGoToRegister}> Click here to get it</span></p>
                 </form>
             </section>
         </AuthLayout>

@@ -24,7 +24,14 @@ const RegisterPage = () => {
         const isRegisterCorrect = await registerUser(email, password, name)
         if (isRegisterCorrect.hasError) return alert(isRegisterCorrect.msg)
 
-        router.replace('/')
+        const destination = router.query.p?.toString() || '/'
+        router.replace(destination)
+    }
+
+    const handleGoToLogin = () => {
+        const destination = router.query.p?.toString()
+        const url = destination ? `/auth/login?p=${destination}` : '/auth/login'
+        router.push(url)
     }
 
     return (
@@ -87,7 +94,8 @@ const RegisterPage = () => {
                     <button className="btn mt-5 btn-accent" type="submit">Sign Up</button>
 
                     <p className="text-end">Do you already have an account?
-                        <span className="link link-secondary font-bold" onClick={() => router.push('/auth/login')}> Click here to log in</span></p>
+                        <span className="link link-secondary font-bold" onClick={handleGoToLogin}> Click here to log in</span>
+                    </p>
                 </form>
             </section>
         </AuthLayout>
