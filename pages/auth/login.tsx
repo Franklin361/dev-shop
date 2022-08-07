@@ -1,5 +1,6 @@
+import { getProviders, getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router"
-import { useContext } from "react";
+import { useContext, useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { devShopApi } from "../../api";
 import { AuthLayout } from "../../components"
@@ -16,15 +17,17 @@ const LoginPage = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
-    const { loginUser } = useContext(AuthContext)
+    const [providers, setProviders] = useState<any>()
 
-    const onSuccess = async (form: FormData) => {
-        const isLoginCorrect = await loginUser(form.email, form.password)
-        // TODO: show alert
-        if (!isLoginCorrect) return alert('Log-in failed 🚨')
+    useEffect(() => {
+        getProviders().then(prov => {
+            setProviders(prov)
+        })
+    }, [])
 
-        const destination = router.query.p?.toString() || '/'
-        router.replace(destination)
+
+    const onSuccess = async ({ email, password }: FormData) => {
+        await signIn('credentials', { email, password })
     }
 
     const handleGoToRegister = () => {
@@ -76,6 +79,14 @@ const LoginPage = () => {
                         }
                     </div>
                     <button className="btn mt-5 btn-accent" type="submit">Log in</button>
+                    {
+                        Object.values(providers).map((provider: any) => {
+                            if (provider.id === 'credentials') return <div key='credentials' />
+                            return (
+                                <button className="btn mt-5" key={provider.id} onClick={() => signIn(provider.id)}>{provider.name}</button>
+                            )
+                        })
+                    }
 
                     <p className="text-end">Do not you have an account?
                         <span className="link link-secondary font-bold" onClick={handleGoToRegister}> Click here to get it</span></p>
@@ -85,3 +96,26 @@ const LoginPage = () => {
     )
 }
 export default LoginPage
+
+
+import { GetServerSideProps } from 'next'
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    const session = await getSession({ req: ctx.req })
+
+    const { p = '/' } = ctx.query
+
+    if (session) {
+        return {
+            redirect: {
+                destination: p.toString(),
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {}
+    }
+}
+

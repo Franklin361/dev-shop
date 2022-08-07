@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import Cookie from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useCartStore } from "../../store";
+import { useEffect } from 'react';
 
 
 type FormData = {
@@ -23,9 +24,23 @@ const AddressPage = () => {
 
     const router = useRouter()
     const { addShippingAddress } = useCartStore(({ addShippingAddress }) => ({ addShippingAddress }))
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
-        defaultValues: getDataFromCookies()
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
+        defaultValues: {
+            name: '',
+            lastName: '',
+            address: '',
+            address2: '',
+            zip: '',
+            phone: '',
+            country: countries[0].code,
+            city: '',
+        }
     });
+
+    useEffect(() => {
+        reset(getDataFromCookies())
+    }, [])
+
 
     const onSuccess = async (form: FormData) => {
         addShippingAddress(form)

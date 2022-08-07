@@ -1,13 +1,15 @@
 import { useReducer, useEffect } from 'react';
+import axios from 'axios';
+import Cookie from 'js-cookie';
+import { useRouter } from 'next/router';
+import { useSession, signIn, signOut } from "next-auth/react"
+
 import { AuthContext, authReducer } from "./"
 
-import { Element, IUser } from "../../interfaces"
 import { devShopApi } from "../../api"
-import Cookie from 'js-cookie';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { useCartStore } from '../../store';
-import { getDataFromCookies } from '../../utils';
+import { useLoadedDataFromCookie } from '../../hooks';
+
+import { Element, IUser } from "../../interfaces"
 
 export interface AuthState {
     isLoggedIn: boolean
@@ -27,31 +29,21 @@ interface IProps {
 
 export const AuthProvider = ({ children }: IProps) => {
 
+    useLoadedDataFromCookie()
+
     const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE)
     const { reload } = useRouter()
 
-    // refer to cart ----
-    const { addProductsFromStorage, addShippingAddress } = useCartStore(({ addProductsFromStorage, addShippingAddress }) => ({ addProductsFromStorage, addShippingAddress }))
-    useEffect(() => {
-        try {
-            const cookie = Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!) : []
-            addProductsFromStorage(cookie)
-        } catch (err) {
-            console.log(err)
-            addProductsFromStorage([])
-        }
-    }, [])
+    const { data, status } = useSession()
 
     useEffect(() => {
-        if (Cookie.get('name')) addShippingAddress(getDataFromCookies())
-    }, [])
+        if (status === 'authenticated') dispatch({ type: 'log-in', payload: data.user as IUser })
+    }, [status, data])
 
 
-    // -----------------
-
-    useEffect(() => {
-        checkToken()
-    }, [])
+    // useEffect(() => {
+    //     checkToken()
+    // }, [])
 
     const checkToken = async () => {
 
@@ -68,7 +60,6 @@ export const AuthProvider = ({ children }: IProps) => {
             Cookie.remove('token')
         }
     }
-
 
     const loginUser = async (email: string, password: string): Promise<boolean> => {
         try {
@@ -113,9 +104,18 @@ export const AuthProvider = ({ children }: IProps) => {
     }
 
     const logOut = () => {
-        Cookie.remove('token')
         Cookie.remove('cart')
-        reload()
+        Cookie.remove('name')
+        Cookie.remove('lastName')
+        Cookie.remove('address')
+        Cookie.remove('address2')
+        Cookie.remove('zip')
+        Cookie.remove('phone')
+        Cookie.remove('country')
+        Cookie.remove('city')
+        signOut()
+        // Cookie.remove('token')
+        // reload()
     }
 
 

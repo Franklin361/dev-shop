@@ -5,6 +5,7 @@ import { AuthLayout } from "../../components"
 import { isEmail } from "../../utils";
 import { useContext } from 'react';
 import { AuthContext } from "../../context";
+import { getSession, signIn } from "next-auth/react";
 
 
 type FormData = {
@@ -24,8 +25,9 @@ const RegisterPage = () => {
         const isRegisterCorrect = await registerUser(email, password, name)
         if (isRegisterCorrect.hasError) return alert(isRegisterCorrect.msg)
 
-        const destination = router.query.p?.toString() || '/'
-        router.replace(destination)
+        // const destination = router.query.p?.toString() || '/'
+        // router.replace(destination)
+        await signIn('credentials', { email, password })
     }
 
     const handleGoToLogin = () => {
@@ -102,3 +104,26 @@ const RegisterPage = () => {
     )
 }
 export default RegisterPage
+
+
+import { GetServerSideProps } from 'next'
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    const session = await getSession({ req: ctx.req })
+
+    const { p = '/' } = ctx.query
+
+    if (session) {
+        return {
+            redirect: {
+                destination: p.toString(),
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {}
+    }
+}
+

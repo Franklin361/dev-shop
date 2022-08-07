@@ -2,12 +2,19 @@ import { CartList, OrderSummary, ShopLayout } from "../../components"
 import { useRouter } from 'next/router';
 import { useCartStore } from "../../store";
 import { countries } from '../../utils/countries';
+import { useEffect } from 'react';
+import Cookies from "js-cookie";
 
 
 
 const SummaryPage = () => {
     const router = useRouter()
     const { shippingAddress, numberOfItems } = useCartStore(({ shippingAddress, numberOfItems }) => ({ shippingAddress, numberOfItems }))
+
+    useEffect(() => {
+        if (!Cookies.get('firstName')) router.push('/checkout/address')
+    }, [])
+
 
     if (!shippingAddress) return null
 
