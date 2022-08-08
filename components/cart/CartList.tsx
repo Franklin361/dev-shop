@@ -5,14 +5,15 @@ import Image from 'next/image';
 import { ItemCounter, Icon } from "../";
 import { useRouter } from 'next/router';
 import { useCartStore } from '../../store';
-import { ICartProduct } from '../../interfaces';
+import { ICartProduct, IOrderItem } from '../../interfaces';
 
 
 interface Props {
     isEdit?: boolean
+    products?: IOrderItem[]
 }
 
-export const CartList = ({ isEdit = false }: Props) => {
+export const CartList = ({ isEdit = false, products }: Props) => {
 
     const productsInCart = useCartStore(state => state.cart)
     const deleteProductFromCart = useCartStore(state => state.deleteProductFromCart)
@@ -28,10 +29,12 @@ export const CartList = ({ isEdit = false }: Props) => {
         updateCartQuantity(product)
     }
 
+    const productsToShow = products ? products : productsInCart
+
     return (
         <div className='my-10'>
             {
-                productsInCart.map((product, index) => (
+                productsToShow.map((product, index) => (
                     <Fragment key={product.slug + product.size}>
                         <div className="grid md:grid-cols-3 grid-cols-1 gap-5">
 
@@ -54,7 +57,7 @@ export const CartList = ({ isEdit = false }: Props) => {
                                         ? <ItemCounter
                                             size='sm'
                                             quantity={product.quantity}
-                                            onChangeQuantity={(value) => handleQuantity(product, value)}
+                                            onChangeQuantity={(value) => handleQuantity(product as ICartProduct, value)}
                                         />
                                         : <b className='text-info'>{product.quantity} {product.quantity <= 1 ? 'item' : 'items'}</b>
                                 }

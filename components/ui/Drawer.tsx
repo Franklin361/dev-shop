@@ -52,7 +52,7 @@ export const Drawer = ({ children }: Props) => {
                                 <a className={`${asPath === '/category/kid' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/category/kid')}><Icon className="text-xl" name="profile" />Profile</a>
                             </li>
                             <li className="md:hidden block mb-2">
-                                <a className={`${asPath === '/category/kid' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/category/kid')}><Icon className="text-xl" name="order" />My orders</a>
+                                <a className={`${asPath === '/order/history' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/order/history')}><Icon className="text-xl" name="order" />My orders</a>
                             </li>
                             <li className="md:hidden block mb-2">
                                 <a

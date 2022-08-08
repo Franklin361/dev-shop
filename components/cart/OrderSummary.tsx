@@ -1,8 +1,16 @@
 import { useCartStore } from "../../store"
 
-export const OrderSummary = () => {
+interface Props {
+    numberOfItems: number
+    subtotal: number
+    taxRate: number
+    tax: number
+    total: number
+}
 
-    const summary = useCartStore(({ numberOfItems, tax, taxRate, subtotal, total }) => ({ numberOfItems, tax, taxRate, subtotal, total }))
+export const OrderSummary = ({ ...summary }: Props) => {
+
+
 
     return (
         <>
