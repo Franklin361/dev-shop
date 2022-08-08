@@ -4,7 +4,8 @@ import Cookie from 'js-cookie'
 
 import { calculateOrderSummary } from '../utils'
 
-import { ICartProduct, InfoAddress, ISize } from '../interfaces'
+import { ICartProduct, InfoAddress, IOrder, ISize } from '../interfaces'
+import { devShopApi } from '../api'
 
 interface CartState {
     isLoaded: boolean
@@ -20,10 +21,11 @@ interface CartState {
     addProductsFromStorage: (products: ICartProduct[]) => void
     addShippingAddress: (shippingAddress: InfoAddress) => void
     deleteProductFromCart: (id: string, size: ISize) => void
+    createOrder: () => Promise<void>
 }
 
 
-export const useCartStore = create<CartState>(set => ({
+export const useCartStore = create<CartState>((set, get) => ({
 
     isLoaded: false,
     numberOfItems: 0,
@@ -100,5 +102,26 @@ export const useCartStore = create<CartState>(set => ({
         Cookie.set('cart', JSON.stringify(cart))
         return { ...state, cart, ...calculateOrderSummary(cart) }
     }),
+
+    createOrder: async () => {
+        const { shippingAddress, cart, subtotal, total, numberOfItems, tax } = get()
+
+        if (!shippingAddress) throw new Error("It should have address!");
+
+        const body: IOrder = {
+            orderItems: cart.map(item => ({ ...item, size: item.size! })),
+            shippingAddress,
+            subtotal, total, numberOfItems, tax,
+            isPaid: false
+        }
+
+        try {
+
+            const { data } = await devShopApi.post('/orders', body)
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }))
 
