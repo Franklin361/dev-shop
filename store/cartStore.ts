@@ -6,6 +6,7 @@ import { calculateOrderSummary } from '../utils'
 
 import { ICartProduct, InfoAddress, IOrder, ISize } from '../interfaces'
 import { devShopApi } from '../api'
+import axios from 'axios';
 
 interface CartState {
     isLoaded: boolean
@@ -21,7 +22,7 @@ interface CartState {
     addProductsFromStorage: (products: ICartProduct[]) => void
     addShippingAddress: (shippingAddress: InfoAddress) => void
     deleteProductFromCart: (id: string, size: ISize) => void
-    createOrder: () => Promise<void>
+    createOrder: () => Promise<{ hasError: boolean, msg: string }>
 }
 
 
@@ -117,10 +118,25 @@ export const useCartStore = create<CartState>((set, get) => ({
 
         try {
 
-            const { data } = await devShopApi.post('/orders', body)
+            const { data } = await devShopApi.post<IOrder>('/orders', body)
+
+            Cookie.set('cart', JSON.stringify([]))
+            set(state => ({ ...state, cart: [], numberOfItems: 0, subtotal: 0, total: 0 }))
+
+            return {
+                hasError: false,
+                msg: data._id!
+            }
 
         } catch (error) {
-            console.log(error)
+            if (axios.isAxiosError(error)) return {
+                hasError: true,
+                msg: (error.response as any).data.message
+            }
+            return {
+                hasError: true,
+                msg: 'Uncontrolled error, contact the administrator!'
+            }
         }
     }
 }))
