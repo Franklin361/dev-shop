@@ -9,6 +9,7 @@ const CartPage = () => {
 
     const router = useRouter()
     const { isLoaded, cart } = useCartStore(({ isLoaded, cart }) => ({ isLoaded, cart }))
+    const summary = useCartStore(({ numberOfItems, tax, taxRate, subtotal, total }) => ({ numberOfItems, tax, taxRate, subtotal, total }))
 
     useEffect(() => {
         if (isLoaded && cart.length === 0) router.replace('/cart/empty')
@@ -33,7 +34,9 @@ const CartPage = () => {
                     <h4 className="text-4xl font-bold md:text-start text-center">Order Summary</h4>
                     <hr className="border border-gray-500" />
 
-                    <OrderSummary />
+                    <OrderSummary
+                        {...summary}
+                    />
 
                     <button
                         className="btn btn-block btn-primary"

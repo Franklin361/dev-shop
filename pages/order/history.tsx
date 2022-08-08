@@ -1,7 +1,16 @@
 import { useRouter } from "next/router"
 import { ShopLayout } from "../../components"
 
-const HistoryPage = () => {
+import { GetServerSideProps, NextPage } from 'next';
+import { getSession } from "next-auth/react"
+import { dbOrders } from "../../database"
+import { IOrder } from "../../interfaces"
+
+interface Props {
+    orders: IOrder[]
+}
+
+const HistoryPage: NextPage<Props> = ({ orders }) => {
 
     const router = useRouter()
 
@@ -22,24 +31,22 @@ const HistoryPage = () => {
                             </tr>
                         </thead>
                         <tbody>
-
-                            <tr className="hover">
-                                <th>1</th>
-                                <td>Cy Ganderton</td>
-                                <td>
-                                    <div className="badge badge-success badge-outline badge-lg">Paid</div>
-                                </td>
-                                <td> <p className="link link-secondary" onClick={() => router.push(`/order/${1}`)}>View order</p> </td>
-                            </tr>
-
-                            <tr className="hover">
-                                <th>2</th>
-                                <td>Hart Hagerty</td>
-                                <td>
-                                    <div className="badge badge-error badge-outline badge-lg">Not paid</div>
-                                </td>
-                                <td> <p className="link link-secondary" onClick={() => router.push(`/order/${1}`)}>View order</p> </td>
-                            </tr>
+                            {
+                                orders.map((order, i) => (
+                                    <tr className="hover" key={order._id}>
+                                        <th>{i + 1}</th>
+                                        <td>{order.shippingAddress.name} {order.shippingAddress.lastName}</td>
+                                        <td>
+                                            <div className="badge badge-success badge-outline badge-lg">
+                                                {
+                                                    order.isPaid ? 'Paid' : 'Not Paid'
+                                                }
+                                            </div>
+                                        </td>
+                                        <td> <p className="link link-secondary" onClick={() => router.push(`/order/${order._id}`)}>View order</p> </td>
+                                    </tr>
+                                ))
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -48,3 +55,23 @@ const HistoryPage = () => {
     )
 }
 export default HistoryPage
+
+
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+    const session: any = await getSession({ req })
+    if (!session) return {
+        redirect: {
+            destination: '/auth/login?p=/order/history',
+            permanent: false
+        }
+    }
+
+    const orders = await dbOrders.getOrdersByUser(session.user._id)
+
+    return {
+        props: {
+            orders
+        }
+    }
+}
