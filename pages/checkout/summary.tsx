@@ -2,14 +2,17 @@ import { CartList, OrderSummary, ShopLayout } from "../../components"
 import { useRouter } from 'next/router';
 import { useCartStore } from "../../store";
 import { countries } from '../../utils/countries';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Cookies from "js-cookie";
 
 
 
 const SummaryPage = () => {
     const router = useRouter()
-    const { shippingAddress, numberOfItems } = useCartStore(({ shippingAddress, numberOfItems }) => ({ shippingAddress, numberOfItems }))
+    const { shippingAddress, numberOfItems, createOrder } = useCartStore(({ shippingAddress, numberOfItems, createOrder }) => ({ shippingAddress, numberOfItems, createOrder }))
+
+    const [isPosting, setIsPosting] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
     useEffect(() => {
         if (!Cookies.get('firstName')) router.push('/checkout/address')
@@ -17,6 +20,19 @@ const SummaryPage = () => {
 
 
     if (!shippingAddress) return null
+
+    const onCreteOrder = async () => {
+        setIsPosting(true)
+        const { hasError, msg } = await createOrder()
+
+        if (hasError) {
+            setIsPosting(false)
+            setErrorMessage(msg)
+            return
+        }
+
+        router.replace(`/order/${msg}`)
+    }
 
     return (
         <ShopLayout
@@ -59,8 +75,13 @@ const SummaryPage = () => {
 
                     <button
                         className="btn btn-block btn-primary"
-                        onClick={() => router.push(`/order/123`)}
+                        onClick={onCreteOrder}
+                        disabled={isPosting}
                     >Confirm order </button>
+
+                    {
+                        errorMessage && <p className="my-3 alert alert-error font-bold">{errorMessage}</p>
+                    }
                 </section>
 
             </section>

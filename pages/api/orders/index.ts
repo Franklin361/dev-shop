@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
+import { OrderModel, ProductModel } from '../../../models'
 import { database } from '../../../database'
 import { IOrder } from '../../../interfaces'
-import { OrderModel, ProductModel } from '../../../models'
 
 type Data = { message: string } | IOrder
 
@@ -37,11 +37,11 @@ async function createOrder(req: NextApiRequest, res: NextApiResponse<Data>) {
 
         if (total.toFixed(2) !== backendTotal.toFixed(2)) throw new Error("The total does not match the amount");
 
-        const userId = (session.user as any)._id
+        const userId = (session.user as { _id: string })._id
         const newOrder = new OrderModel({
+            ...req.body,
             isPaid: false,
             user: userId,
-            ...req.body,
         })
 
         await newOrder.save()
