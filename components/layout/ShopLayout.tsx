@@ -27,8 +27,6 @@ export const ShopLayout = ({ children, title = 'Dev Shop', imgUrl, pageDesc = ''
             <Drawer>
                 <NavBar />
 
-                <aside></aside>
-
                 <main className="mx-auto w-full max-w-screen-xl">
                     {children}
                 </main>
