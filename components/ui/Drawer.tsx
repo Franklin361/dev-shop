@@ -34,17 +34,22 @@ export const Drawer = ({ children }: Props) => {
 
                 <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content backdrop-filter">
 
-                    <h5 className="md:hidden block">Search</h5>
-                    <hr className="md:hidden block" />
-                    <form onSubmit={handleSearch} className="center gap-2">
-                        <input
-                            type="text" placeholder="Name"
-                            className="md:hidden block input input-bordered input-primary w-full text-lg my-5"
-                            onChange={e => setSearchText(e.target.value)}
-                            value={searchText}
-                        />
-                        <button className="btn btn-primary"><Icon name="search" className="text-xl cursor-pointer" /></button>
-                    </form>
+                    {
+                        user?.role === 'client' && <>
+                            <h5 className="md:hidden block">Search</h5>
+                            <hr className="md:hidden block" />
+                            <form onSubmit={handleSearch} className="center gap-2">
+                                <input
+                                    type="text" placeholder="Name"
+                                    className="md:hidden block input input-bordered input-primary w-full text-lg my-5"
+                                    onChange={e => setSearchText(e.target.value)}
+                                    value={searchText}
+                                />
+                                <button className="btn btn-primary"><Icon name="search" className="text-xl cursor-pointer" /></button>
+                            </form>
+                        </>
+                    }
+
                     {
                         isLoggedIn && <>
 
@@ -68,7 +73,7 @@ export const Drawer = ({ children }: Props) => {
                     }
 
                     {
-                        isLoggedIn && <>
+                        (isLoggedIn && user?.role === 'client') && <>
                             <h5 className="md:hidden block">Gender</h5>
                             <hr className="mb-5 md:hidden block" />
 
@@ -89,13 +94,13 @@ export const Drawer = ({ children }: Props) => {
                             <h5 className="md:hidden block">Admin Panel</h5>
                             <hr className="mb-5 md:hidden block" />
                             <li className="md:hidden block mb-2">
-                                <a className={`${asPath === '/category/kid' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/category/kid')}><Icon className="text-xl" name="men" />Products</a>
+                                <a className={`${asPath === '/admin' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/admin')}><Icon className="text-xl" name="men" />Dashboard</a>
                             </li>
                             <li className="md:hidden block mb-2">
-                                <a className={`${asPath === '/category/kid' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/category/kid')}><Icon className="text-xl" name="orders" />Orders</a>
+                                <a className={`${asPath === '/admin/orders' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/admin/orders')}><Icon className="text-xl" name="orders" />Orders</a>
                             </li>
                             <li className="md:hidden block mb-2">
-                                <a className={`${asPath === '/category/kid' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/category/kid')}><Icon className="text-xl" name="users" />Users</a>
+                                <a className={`${asPath === '/admin/users' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/admin/users')}><Icon className="text-xl" name="users" />Users</a>
                             </li>
                         </>
                     }
