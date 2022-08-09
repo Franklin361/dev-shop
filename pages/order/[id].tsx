@@ -1,12 +1,50 @@
-import { CartList, Chip, OrderSummary, ShopLayout } from "../../components"
+import { CartList, Chip, Loading, OrderSummary, ShopLayout } from "../../components"
 import { useRouter } from 'next/router';
 
 interface Props {
     order: IOrder
 }
 
+
+export type OrderResponseBody = {
+    id: string;
+    status:
+    | "COMPLETED"
+    | "SAVED"
+    | "APPROVED"
+    | "VOIDED"
+    | "PAYER_ACTION_REQUIRED";
+};
+
 const OrderPage: NextPage<Props> = ({ order }) => {
     const router = useRouter()
+
+    const [isPaying, setIsPaying] = useState(false);
+
+    const onOrderCompleted = async (details: OrderResponseBody) => {
+
+        if (details.status !== 'COMPLETED') {
+            return alert('No hay pago en Paypal');
+        }
+
+        setIsPaying(true);
+
+        try {
+            await devShopApi.post(`/orders/pay`, {
+                transactionId: details.id,
+                orderId: order._id
+            });
+
+            router.reload();
+
+        } catch (error) {
+            setIsPaying(false);
+            console.log(error);
+            alert('Error');
+        }
+
+    }
+
 
     return (
         <ShopLayout
@@ -59,15 +97,30 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                         taxRate={Number(process.env.NEXT_PUBLIC_RATE) || 0}
                     />
                     {
+                        isPaying && <Loading center />
+                    }
+                    {
                         order.isPaid
                             ? <p className="alert alert-success">Order paid</p>
-                            :
-                            <button
-                                className="btn btn-block btn-primary"
-                            // onClick={() => router.push(`cart/address/`)} 
-                            >
-                                Pay
-                            </button>
+                            : !isPaying && <PayPalButtons
+                                createOrder={(data, actions) => {
+                                    return actions.order.create({
+                                        purchase_units: [
+                                            {
+                                                amount: {
+                                                    value: `${order.total}`,
+                                                },
+                                            },
+                                        ],
+                                    });
+                                }}
+
+                                onApprove={(data, actions) => {
+                                    return actions.order!.capture().then((details) => {
+                                        onOrderCompleted(details)
+                                    });
+                                }}
+                            />
                     }
                 </section>
 
@@ -84,6 +137,9 @@ import { getSession } from "next-auth/react";
 import { dbOrders } from "../../database";
 import { IOrder } from "../../interfaces";
 import { countries } from '../../utils/countries';
+import { PayPalButtons } from "@paypal/react-paypal-js";
+import { devShopApi } from "../../api";
+import { useState } from "react";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
     const { id = '' } = query

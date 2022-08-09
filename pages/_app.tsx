@@ -9,6 +9,7 @@ import { AuthProvider } from '../context'
 
 import 'react-slideshow-image/dist/styles.css'
 import '../styles/globals.css'
+import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 
 
 
@@ -33,17 +34,18 @@ interface Props {
 
 export const AppState = ({ children }: Props) => {
   return (
-
     <SessionProvider>
-      <SWRConfig
-        value={{
-          fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
-        }}
-      >
-        <AuthProvider>
-          {children}
-        </AuthProvider>
-      </SWRConfig>
+      <PayPalScriptProvider options={{ "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID as string }}>
+        <SWRConfig
+          value={{
+            fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
+          }}
+        >
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </SWRConfig>
+      </PayPalScriptProvider>
     </SessionProvider>
   )
 }
