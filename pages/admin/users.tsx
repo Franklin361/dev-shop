@@ -1,5 +1,5 @@
 import { devShopApi } from "../../api";
-import { AdminLayout, HeaderAdmin, Icon } from "../../components"
+import { AdminLayout, CollapseItem, HeaderAdmin, Icon } from "../../components"
 import useSWR from 'swr';
 import { useState, useEffect } from 'react';
 import { IRole, IUser } from "../../interfaces";
@@ -47,9 +47,30 @@ const UsersPage = () => {
 
             <div className="flex gap-5 flex-col">
                 {
-                    users.map((user) => (
-                        <CollapseItem key={user._id} onRoleUpdated={onRoleUpdated} user={user} />
+                    users.length !== 0 ? users.map((user) => (
+                        <CollapseItem title={user.name} key={user._id} >
+                            <hr />
+                            <div className="fade-in-up px-3 py-5 flex md:gap-0 gap-5 md:items-center items-start md:justify-evenly justify-start md:flex-row flex-col">
+                                <div className="flex md:flex-col md:items-start items-center flex-row gap-2"> <span>Name:</span> <span className="font-bold">{user.name}</span></div>
+                                <div className="flex md:flex-col md:items-start items-center flex-row gap-2"> <span>E-mail:</span> <span className="font-bold">{user.email}</span></div>
+                                <div className="flex md:flex-col md:items-start items-center flex-row gap-2">
+                                    <span>Rol:</span>
+                                    <select
+                                        className={`select select-bordered select-secondary w-full text-lg`}
+                                        defaultValue={user.role}
+                                        onChange={({ target }) => onRoleUpdated(user._id!, target.value as IRole)}
+                                    >
+                                        <option value="client">Client</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </CollapseItem>
+
                     ))
+                        : <div className='rounded-full w-full p-3 bg-accent text-center'>
+                            <span className='font-bold w-full text-2xl text-black'>No Users</span>
+                        </div>
                 }
             </div>
         </AdminLayout>
@@ -57,42 +78,3 @@ const UsersPage = () => {
 }
 export default UsersPage
 
-interface Props {
-    user: IUser,
-    onRoleUpdated: (userId: string, newRole: IRole) => Promise<void>
-
-}
-
-export const CollapseItem = ({ user, onRoleUpdated }: Props) => {
-
-    const [isOpen, setIsOpen] = useState(false)
-
-    return (
-        <div className={`border fade-in  rounded-md overflow-hidden ${isOpen ? 'border-secondary bg-black/70' : ''}`}>
-            <div className=" p-3 cursor-pointer select-none flex justify-between items-center" onClick={() => setIsOpen(prev => !prev)}>
-                <p>{user._id}</p>
-                <Icon name="down" className={`text-3xl transition-all ease-in ${isOpen ? 'rotate-180' : ''}`} />
-            </div>
-            {
-                isOpen && <>
-                    <hr />
-                    <div className="fade-in-up px-3 py-5 flex md:gap-0 gap-5 md:items-center items-start md:justify-evenly justify-start md:flex-row flex-col">
-                        <div className="flex md:flex-col md:items-start items-center flex-row gap-2"> <span>Name:</span> <span className="font-bold">{user.name}</span></div>
-                        <div className="flex md:flex-col md:items-start items-center flex-row gap-2"> <span>E-mail:</span> <span className="font-bold">{user.email}</span></div>
-                        <div className="flex md:flex-col md:items-start items-center flex-row gap-2">
-                            <span>Rol:</span>
-                            <select
-                                className={`select select-bordered select-secondary w-full text-lg`}
-                                defaultValue={user.role}
-                                onChange={({ target }) => onRoleUpdated(user._id!, target.value as IRole)}
-                            >
-                                <option value="client">Client</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>
-                    </div>
-                </>
-            }
-        </div>
-    )
-}
