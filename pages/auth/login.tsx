@@ -78,15 +78,18 @@ const LoginPage = () => {
                             errors.password && <p className="my-1 text-sm text-error" >{errors.password.message}</p>
                         }
                     </div>
-                    <button className="btn mt-5 btn-accent" type="submit">Log in</button>
-                    {
-                        Object.values(providers).map((provider: any) => {
-                            if (provider.id === 'credentials') return <div key='credentials' />
-                            return (
-                                <button className="btn mt-5" key={provider.id} onClick={() => signIn(provider.id)}>{provider.name}</button>
-                            )
-                        })
-                    }
+                    <div className="flex w-full  mt-5">
+                        <button className="btn flex-1 btn-accent" type="submit">Log in</button>
+                        <div className="divider divider-horizontal">OR</div>
+                        {
+                            providers && Object.values(providers).map((provider: any) => {
+                                if (provider.id === 'credentials') return <div key='credentials' />
+                                return (
+                                    <button className="btn flex-1" type="button" key={provider.id} onClick={() => signIn(provider.id)}>{provider.name}</button>
+                                )
+                            })
+                        }
+                    </div>
 
                     <p className="text-end">Do not you have an account?
                         <span className="link link-secondary font-bold" onClick={handleGoToRegister}> Click here to get it</span></p>
@@ -101,14 +104,15 @@ export default LoginPage
 import { GetServerSideProps } from 'next'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const session = await getSession({ req: ctx.req })
+    const session: any = await getSession({ req: ctx.req })
 
     const { p = '/' } = ctx.query
 
     if (session) {
+        const url = session.user.role === 'admin' ? '/admin' : p.toString()
         return {
             redirect: {
-                destination: p.toString(),
+                destination: url,
                 permanent: false
             }
         }

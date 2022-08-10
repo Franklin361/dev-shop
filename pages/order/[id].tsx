@@ -1,4 +1,4 @@
-import { CartList, Chip, Loading, OrderSummary, ShopLayout } from "../../components"
+import { CartList, Chip, Icon, Loading, OrderSummary, ShopLayout } from "../../components"
 import { useRouter } from 'next/router';
 
 interface Props {
@@ -101,7 +101,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                     }
                     {
                         order.isPaid
-                            ? <p className="alert alert-success">Order paid</p>
+                            ? <div className="alert alert-success font-bold"><span> <Icon name="check" className="text-2xl" /> Order paid</span></div>
                             : !isPaying && <PayPalButtons
                                 createOrder={(data, actions) => {
                                     return actions.order.create({

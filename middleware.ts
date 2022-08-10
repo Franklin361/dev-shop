@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-const seed = process.env.NEXT_AUTH_SECRET as string;
+const seed = process.env.NEXTAUTH_SECRET as string;
 
 export async function middleware(req: NextRequest) {
     // if (req.nextUrl.pathname.startsWith("/checkout")) {

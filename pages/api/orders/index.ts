@@ -47,7 +47,8 @@ async function createOrder(req: NextApiRequest, res: NextApiResponse<Data>) {
         newOrder.total = +newOrder.total.toFixed(2)
 
         await newOrder.save()
-        return res.status(400).json(newOrder)
+
+        return res.status(200).json(newOrder)
 
     } catch (error) {
         console.log(error)

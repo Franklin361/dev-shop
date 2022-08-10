@@ -5,6 +5,7 @@ import Cookie from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useCartStore } from "../../store";
 import { useEffect } from 'react';
+import { useContextAuth } from "../../hooks";
 
 
 type FormData = {
@@ -23,6 +24,7 @@ const defaultCounty = Cookie.get('country') ? Cookie.get('country') : 'MEX'
 const AddressPage = () => {
 
     const router = useRouter()
+    const { user } = useContextAuth()
     const { addShippingAddress } = useCartStore(({ addShippingAddress }) => ({ addShippingAddress }))
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
         defaultValues: {
@@ -178,10 +180,14 @@ const AddressPage = () => {
                             }
                         </div>
                     </div>
-
                     <div className="col-span-2 text-center mt-5">
-                        <button type="submit" className="btn btn-primary md:w-auto w-full">Check order</button>
+                        {
+                            user?.role !== 'admin' ?
+                                <button type="submit" className="btn btn-primary md:w-auto w-full">Check order</button>
+                                : <div className='alert alert-warning font-bold'>You are an admin, you cannot add your address</div>
+                        }
                     </div>
+
                 </form>
 
             </section>

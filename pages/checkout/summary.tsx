@@ -1,4 +1,4 @@
-import { CartList, OrderSummary, ShopLayout } from "../../components"
+import { CartList, Loading, OrderSummary, ShopLayout } from "../../components"
 import { useRouter } from 'next/router';
 import { useCartStore } from "../../store";
 import { countries } from '../../utils/countries';
@@ -9,13 +9,13 @@ import Cookies from "js-cookie";
 
 const SummaryPage = () => {
     const router = useRouter()
-    const { shippingAddress, numberOfItems, createOrder } = useCartStore(({ shippingAddress, numberOfItems, createOrder }) => ({ shippingAddress, numberOfItems, createOrder }))
+    const { shippingAddress, numberOfItems, createOrder, tax, total, subtotal, taxRate, resetCart } = useCartStore(({ shippingAddress, numberOfItems, createOrder, tax, total, subtotal, taxRate, resetCart }) => ({ shippingAddress, numberOfItems, createOrder, tax, total, subtotal, taxRate, resetCart }))
 
     const [isPosting, setIsPosting] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
 
     useEffect(() => {
-        if (!Cookies.get('firstName')) router.push('/checkout/address')
+        if (!Cookies.get('name')) router.push('/checkout/address')
     }, [])
 
 
@@ -32,6 +32,7 @@ const SummaryPage = () => {
         }
 
         router.replace(`/order/${msg}`)
+        resetCart()
     }
 
     return (
@@ -40,7 +41,11 @@ const SummaryPage = () => {
             pageDesc="Summary of the order"
         >
             <section className="md:grid md:grid-cols-2 flex flex-col-reverse mt-10 gap-24 relative px-5">
-
+                {
+                    isPosting && <div className="w-full h-full absolute bg-black/70 z-50 center">
+                        <Loading center label="Creating order..." textClass="mt-14 block text-2xl" />
+                    </div>
+                }
                 <section>
                     <h1 className="text-4xl font-bold">Order Summary</h1>
                     <CartList />
@@ -71,7 +76,17 @@ const SummaryPage = () => {
                         onClick={() => router.push(`/cart`)}
                         className="link link-secondary text-end">Edit Products</span>
 
-                    <OrderSummary />
+                    <OrderSummary
+                        numberOfItems={numberOfItems}
+                        tax={tax}
+                        taxRate={taxRate}
+                        total={total}
+                        subtotal={subtotal}
+                    />
+
+                    {
+                        errorMessage && <p className="my-3 alert alert-error font-bold">{errorMessage}</p>
+                    }
 
                     <button
                         className="btn btn-block btn-primary"
@@ -79,9 +94,6 @@ const SummaryPage = () => {
                         disabled={isPosting}
                     >Confirm order </button>
 
-                    {
-                        errorMessage && <p className="my-3 alert alert-error font-bold">{errorMessage}</p>
-                    }
                 </section>
 
             </section>

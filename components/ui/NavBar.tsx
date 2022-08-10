@@ -1,17 +1,18 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { useContextAuth } from "../../hooks"
 import { useCartStore } from "../../store"
 import { Icon, ButtonSearch } from "./"
 
 export const NavBar = () => {
-
+    const { user } = useContextAuth()
     const { asPath } = useRouter()
     const numberOfItems = useCartStore(state => state.numberOfItems)
 
     return (
-        <nav className="bg-black/90 shadow-2xl shadow-black/70 p-5 sticky top-0 left-0 z-30 flex justify-center items-center md:pr-10 pr-5">
+        <nav className="bg-black/90 shadow-2xl shadow-black/70 p-5 sticky top-0 left-0 z-30 flex justify-center items-center">
             <div className="flex-1 flex">
-                <Link href='/'>
+                <Link href={`${user?.role !== 'admin' ? '/' : '/admin'}`}>
                     <h4 className="cursor-pointer select-none">Dev Shop</h4>
                 </Link>
             </div>
@@ -54,8 +55,8 @@ export const NavBar = () => {
                     </div>
                 </Link>
 
-                <label htmlFor="my-drawer" className="drawer-button p-2  rounded cursor-pointer flex gap-2 hover:bg-white/20 md:hidden">
-                    <span className="lg:block hidden select-none">Menu</span>
+                <label htmlFor="my-drawer" className="drawer-button p-2  rounded cursor-pointer flex gap-2 hover:bg-white/20 ">
+                    <span className="select-none">Menu</span>
                     <Icon className="text-2xl" name="menu" />
                 </label>
             </div>

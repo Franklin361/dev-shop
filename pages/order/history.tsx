@@ -37,7 +37,7 @@ const HistoryPage: NextPage<Props> = ({ orders }) => {
                                         <th>{i + 1}</th>
                                         <td>{order.shippingAddress.name} {order.shippingAddress.lastName}</td>
                                         <td>
-                                            <div className="badge badge-success badge-outline badge-lg">
+                                            <div className={`badge ${order.isPaid ? 'badge-success' : 'badge-error'} badge-outline badge-lg font-bold`}>
                                                 {
                                                     order.isPaid ? 'Paid' : 'Not Paid'
                                                 }
@@ -47,9 +47,14 @@ const HistoryPage: NextPage<Props> = ({ orders }) => {
                                     </tr>
                                 ))
                             }
+
                         </tbody>
+
                     </table>
                 </div>
+                {
+                    orders.length === 0 && <div className="text-center w-full my-5 text-3xl font-bold text-info">No orders </div>
+                }
             </section>
         </ShopLayout>
     )

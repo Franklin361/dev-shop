@@ -20,6 +20,7 @@ const ProductPage = ({ product }: Props) => {
     _id: product._id,
   })
   const addToCart = useCartStore(state => state.addProductToCart)
+  const { user } = useContextAuth()
   const { push } = useRouter()
 
   const handleSelectSize = (size: ISize) => setTempCartProduct(prev => ({
@@ -70,13 +71,17 @@ const ProductPage = ({ product }: Props) => {
             />
           </div>
 
-          <button
-            className={`btn btn-primary btn-circle btn-block ${!tempCartProduct.size ? 'pointer-events-none' : ''}`}
-            disabled={(product.inStock === 0)}
-            onClick={handleAddToCart}
-          >
-            {product.inStock === 0 ? 'Not avaible' : tempCartProduct.size ? 'Add to cart' : 'Select a size'}
-          </button>
+          {
+            !(user?.role === 'admin') ? <button
+              className={`btn btn-primary btn-circle btn-block ${!tempCartProduct.size ? 'pointer-events-none' : ''}`}
+              disabled={(product.inStock === 0)}
+              onClick={handleAddToCart}
+            >
+              {product.inStock === 0 ? 'Not avaible' : tempCartProduct.size ? 'Add to cart' : 'Select a size'}
+            </button>
+              : <div className='alert alert-warning font-bold'>You are an admin, you cannot select a product</div>
+          }
+
 
           <p>{product.description}</p>
         </div>
@@ -108,9 +113,11 @@ import { useState } from 'react';
 import { ISize } from '../../interfaces/product';
 import { useRouter } from 'next/router'
 import { useCartStore } from '../../store'
+import { useContextAuth } from '../../hooks'
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { slug } = ctx.params as { slug: string }
+
   const product = await dbProducts.getProductsBySlug(slug)
 
   if (!product) {

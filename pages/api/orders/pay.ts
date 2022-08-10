@@ -46,11 +46,12 @@ const getPayPalBearerToken = async (): Promise<string | null> => {
 async function payOrder(req: NextApiRequest, res: NextApiResponse<Data>) {
 
     const payPalBearerToken = await getPayPalBearerToken()
+
     if (!payPalBearerToken) return res.status(400).json({ message: 'No PayPal token' })
 
     const { transactionId = '', orderId = '' } = req.body
 
-    const url = `${process.env.PAYPAL_OAUTH_URL}/${transactionId}`
+    const url = `${process.env.PAYPAL_ORDERS_URL}/${transactionId}`
 
     const { data } = await axios.get<PaypalOrderStatusResponse>(url, {
         headers: {
@@ -81,7 +82,7 @@ async function payOrder(req: NextApiRequest, res: NextApiResponse<Data>) {
 
     await database.disconnect()
 
-    return res.status(400).json({ message: 'Your order has been paid' })
+    return res.status(200).json({ message: 'Your order has been paid' })
 }
 
 

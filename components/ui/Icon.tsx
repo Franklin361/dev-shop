@@ -1,6 +1,6 @@
 import { NameIcon, PropsIcon } from "../../interfaces"
 
-import { AiOutlineCloseCircle, AiOutlineCreditCard, AiOutlineDelete, AiOutlineFile, AiOutlineLogin, AiOutlineLogout, AiOutlineMan, AiOutlineMenu, AiOutlineMinusCircle, AiOutlinePlusCircle, AiOutlineSearch, AiOutlineShoppingCart, AiOutlineSnippets, AiOutlineTags, AiOutlineTeam, AiOutlineUser, AiOutlineWoman } from "react-icons/ai";
+import { AiOutlineCheckCircle, AiOutlineCloseCircle, AiOutlineCreditCard, AiOutlineDelete, AiOutlineFile, AiOutlineLogin, AiOutlineLogout, AiOutlineMan, AiOutlineMenu, AiOutlineMinusCircle, AiOutlinePlusCircle, AiOutlineSearch, AiOutlineShoppingCart, AiOutlineSnippets, AiOutlineTags, AiOutlineTeam, AiOutlineUser, AiOutlineWoman } from "react-icons/ai";
 
 import { TbMoodKid } from 'react-icons/tb'
 
@@ -25,6 +25,7 @@ export const Icon = ({ name, ...props }: PropsIcon): JSX.Element => {
         'orders': <AiOutlineSnippets {...props} />,
         'products': <AiOutlineTags {...props} />,
         'users': <AiOutlineTeam {...props} />,
+        'check': <AiOutlineCheckCircle {...props} />,
     }
 
 

@@ -22,6 +22,7 @@ interface CartState {
     addProductsFromStorage: (products: ICartProduct[]) => void
     addShippingAddress: (shippingAddress: InfoAddress) => void
     deleteProductFromCart: (id: string, size: ISize) => void
+    resetCart: () => void
     createOrder: () => Promise<{ hasError: boolean, msg: string }>
 }
 
@@ -120,24 +121,29 @@ export const useCartStore = create<CartState>((set, get) => ({
 
             const { data } = await devShopApi.post<IOrder>('/orders', body)
 
-            Cookie.set('cart', JSON.stringify([]))
-            set(state => ({ ...state, cart: [], numberOfItems: 0, subtotal: 0, total: 0 }))
-
             return {
                 hasError: false,
                 msg: data._id!
             }
 
         } catch (error) {
-            if (axios.isAxiosError(error)) return {
-                hasError: true,
-                msg: (error.response as any).data.message
+            if (axios.isAxiosError(error)) {
+                console.log(error)
+                return {
+                    hasError: true,
+                    msg: (error.response as any).data.message
+                }
             }
             return {
                 hasError: true,
                 msg: 'Uncontrolled error, contact the administrator!'
             }
         }
-    }
+    },
+
+    resetCart: () => set(state => {
+        Cookie.set('cart', JSON.stringify([]))
+        return ({ ...state, cart: [], numberOfItems: 0, subtotal: 0, total: 0 })
+    })
 }))
 
