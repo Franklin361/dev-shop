@@ -33,17 +33,17 @@ const AdminPage: NextPage = () => {
 
     return (
         <AdminLayout>
-            <HeaderAdmin icon='products' title='Dashboard' subtitle='General statistics' />
+            <HeaderAdmin icon='board' title='Dashboard' subtitle='General statistics' color='black/70' />
 
-            <div className='grid grid-cols-2 gap-10'>
-                <SummaryTile icon='credit' subtitle='Total orders' title={data!.numberOfOrders} />
-                <SummaryTile icon='credit' subtitle='Paid orders' title={data!.paidOrders} />
-                <SummaryTile icon='credit' subtitle='Pending orders' title={data!.notPaidOrders} />
-                <SummaryTile icon='credit' subtitle='Clients' title={data!.numberOfClients} />
-                <SummaryTile icon='credit' subtitle='Products' title={data!.numberOfProducts} />
-                <SummaryTile icon='credit' subtitle='Out of stock' title={data!.productsWithNoInventory} />
-                <SummaryTile icon='credit' subtitle='Low inventory' title={data!.lowInventory} />
-                <SummaryTile icon='credit' subtitle='Updating in...' title={refreshIn} />
+            <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-10'>
+                <SummaryTile color='info' icon='orders' subtitle='Total orders' title={data!.numberOfOrders} />
+                <SummaryTile color='success' icon='credit' subtitle='Paid orders' title={data!.paidOrders} />
+                <SummaryTile color='error' icon='close' subtitle='Pending orders' title={data!.notPaidOrders} />
+                <SummaryTile color='accent' icon='users' subtitle='Clients' title={data!.numberOfClients} />
+                <SummaryTile color='black/70' icon='products' subtitle='Products' title={data!.numberOfProducts} />
+                <SummaryTile color='warning' icon='warning' subtitle='Out of stock' title={data!.productsWithNoInventory} />
+                <SummaryTile color='primary' icon='low' subtitle='Low inventory' title={data!.lowInventory} />
+                <SummaryTile color='secondary' icon='reload' subtitle='Updating in...' title={refreshIn} />
             </div>
 
         </AdminLayout>

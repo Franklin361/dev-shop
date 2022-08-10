@@ -39,21 +39,25 @@ export const NavBar = () => {
             </div>
 
             <div className="flex items-center justify-end gap-5 flex-1">
+                {
+                    user?.role !== 'admin' && <>
 
-                <ButtonSearch />
+                        <ButtonSearch />
 
-                <Link href='/cart'>
-                    <div className="indicator rounded-full p-2 hover:bg-white/20 cursor-pointer">
-                        {
-                            numberOfItems !== 0 && <span className="indicator-item  badge badge-md badge-accent font-bold select-none">
+                        <Link href='/cart'>
+                            <div className="indicator rounded-full p-2 hover:bg-white/20 cursor-pointer">
                                 {
-                                    numberOfItems >= 10 ? '+9' : numberOfItems
+                                    numberOfItems !== 0 && <span className="indicator-item  badge badge-md badge-accent font-bold select-none">
+                                        {
+                                            numberOfItems >= 10 ? '+9' : numberOfItems
+                                        }
+                                    </span>
                                 }
-                            </span>
-                        }
-                        <Icon name="cart" className="text-3xl" />
-                    </div>
-                </Link>
+                                <Icon name="cart" className="text-3xl" />
+                            </div>
+                        </Link>
+                    </>
+                }
 
                 <label htmlFor="my-drawer" className="drawer-button p-2  rounded cursor-pointer flex gap-2 hover:bg-white/20 ">
                     <span className="select-none">Menu</span>

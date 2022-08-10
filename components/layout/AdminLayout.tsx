@@ -16,7 +16,7 @@ export const AdminLayout = ({ children, title = 'Dev Shop | Admin' }: Props) => 
             <Drawer>
                 <AdminNavBar />
 
-                <main className="mx-auto w-full max-w-screen-xl">
+                <main className="mx-auto w-full max-w-screen-xl px-4 mb-16">
                     {children}
                 </main>
             </Drawer>

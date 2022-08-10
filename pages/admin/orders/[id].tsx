@@ -14,7 +14,8 @@ const AdminOrderByIDPage: NextPage<Props> = ({ order }) => {
 
     return (
         <AdminLayout title='Dev Shop | Admin - Order'>
-            <HeaderAdmin icon='order' title='Order summary' subtitle={`OrdenId: ${order._id}`} />
+            <HeaderAdmin icon='order' title='Order summary' subtitle={`${order._id}`}  color='info'/>
+
             <section className="md:grid md:grid-cols-2 flex flex-col-reverse mt-10 gap-24 relative px-5">
                 <section>
                     {
