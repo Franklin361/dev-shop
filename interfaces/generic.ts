@@ -11,7 +11,7 @@ export interface ILayoutShop {
 export type NameIcon = 'men' | 'women' | 'board' | 'up' | 'down' |
     'kid' | 'search' | 'cart' | 'menu' | 'plus' | 'low' | 'warning' |
     'less' | 'close' | 'delete' | 'credit' | 'log-in' | 'reload'
-    | 'log-out' | 'profile' | 'order' | 'products' | 'users' | 'orders' | 'check'
+    | 'log-out' | 'profile' | 'order' | 'products' | 'product' | 'users' | 'orders' | 'check'
 export interface PropsIcon extends IconBaseProps {
     name: NameIcon;
 }

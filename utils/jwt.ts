@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-const seed = process.env.NEXT_PUBLIC_SEED as string;
+const seed = process.env.NEXTAUTH_SECRET as string;
 
 export const signToken = (_id: string, email: string) => {
 
