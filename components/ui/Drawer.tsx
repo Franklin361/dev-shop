@@ -96,7 +96,7 @@ export const Drawer = ({ children }: Props) => {
                             <h5 className="">Admin Panel</h5>
                             <hr className="mb-5 " />
                             <li className=" mb-2">
-                                <a className={`${asPath === '/admin' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/admin')}><Icon className="text-xl" name="men" />Dashboard</a>
+                                <a className={`${asPath === '/admin' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/admin')}><Icon className="text-xl" name="board" />Dashboard</a>
                             </li>
                             <li className=" mb-2">
                                 <a className={`${asPath === '/admin/orders' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/admin/orders')}><Icon className="text-xl" name="orders" />Orders</a>

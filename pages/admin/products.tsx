@@ -1,8 +1,7 @@
 import useSWR from "swr";
-import { AdminLayout, CollapseItem, HeaderAdmin } from "../../components";
+import { AdminLayout, CollapseItem, HeaderAdmin, Icon } from "../../components";
 import { IProduct } from "../../interfaces";
 import { useRouter } from 'next/router';
-import Image from "next/image";
 
 const ProductsPage = () => {
     const { push } = useRouter()
@@ -12,7 +11,15 @@ const ProductsPage = () => {
 
     return (
         <AdminLayout title="Dev Shop | Admin - Products">
-            <HeaderAdmin icon="products" title="Products" subtitle="Product maintenance" />
+            <HeaderAdmin icon="products" title="Products" subtitle="Product maintenance" color="primary" />
+
+            <div className='mb-10 w-full sticky top-24 flex justify-end z-10'>
+                <button className='btn btn-info gap-3 font-bold md:w-auto w-full' onClick={() => push('/admin/products/new')}>
+                    <Icon name='board' className='text-3xl' />
+                    <span>Create a product</span>
+                </button>
+            </div>
+
             <div className="flex flex-col gap-5">
                 {
                     data && data?.length !== 0

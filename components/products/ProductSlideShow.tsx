@@ -16,11 +16,12 @@ export const ProductSlideShow = ({ images = [] }: Props) => {
             indicators={() => <div className="indicator_slide" />}
             canSwipe
             infinite
+            transitionDuration={500}
         >
             {images.map((slideImage, index) => (
                 <img
                     key={index}
-                    src={`/products/${slideImage}`}
+                    src={`${slideImage}`}
                     className="w-10/12 block mx-auto object-contain rounded"
                 />
             ))}

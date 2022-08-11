@@ -38,29 +38,17 @@ const getProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     const products = await ProductModel.find().sort({ title: 'asc' }).lean();
     await database.disconnect()
 
-    const updatedProducts = products.map(product => {
-        product.images = product.images.map(image => {
-            return image.includes('http') ? image : `${process.env.HOST_NAME}products/${image}`
-        });
-
-        return product;
-    })
-    res.status(200).json(updatedProducts);
+    res.status(200).json(products);
 }
 
 
 const updateProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+
     const { _id = '', images = [] } = req.body as IProduct;
-    if (!isValidObjectId(_id)) {
-        return res.status(400).json({ message: 'El id del producto no es válido' });
-    }
 
-    if (images.length < 2) {
-        return res.status(400).json({ message: 'Es necesario al menos 2 imágenes' });
-    }
+    if (!isValidObjectId(_id)) return res.status(400).json({ message: 'The product ID is invalid' });
 
-    // TODO: posiblemente tendremos un localhost:3000/products/asdasd.jpg
-
+    if (images.length < 2) return res.status(400).json({ message: 'At least 2 images are required' });
 
     try {
 
@@ -68,16 +56,12 @@ const updateProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
         const product = await ProductModel.findById(_id);
         if (!product) {
             await database.disconnect();
-            return res.status(400).json({ message: 'No existe un producto con ese ID' });
+            return res.status(400).json({ message: 'There is no product with this ID' });
         }
 
-        // TODO: eliminar fotos en Cloudinary
-        // https://res.cloudinary.com/cursos-udemy/image/upload/v1645914028/nct31gbly4kde6cncc6i.jpg
         product.images.forEach(async (image) => {
             if (!images.includes(image)) {
-                // Borrar de cloudinary
                 const [fileId, extension] = image.substring(image.lastIndexOf('/') + 1).split('.')
-                console.log({ image, fileId, extension });
                 await cloudinary.uploader.destroy(fileId);
             }
         });
@@ -91,7 +75,7 @@ const updateProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
     } catch (error) {
         console.log(error);
         await database.disconnect();
-        return res.status(400).json({ message: 'Revisar la consola del servidor' });
+        return res.status(400).json({ message: 'Check the server console' });
     }
 
 
@@ -102,18 +86,14 @@ const createProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
 
     const { images = [] } = req.body as IProduct;
 
-    if (images.length < 2) {
-        return res.status(400).json({ message: 'El producto necesita al menos 2 imágenes' });
-    }
-
-    // TODO: posiblemente tendremos un localhost:3000/products/asdasd.jpg
+    if (images.length < 2) return res.status(400).json({ message: 'At least 2 images are required' });
 
     try {
         await database.connect();
         const productInDB = await ProductModel.findOne({ slug: req.body.slug });
         if (productInDB) {
             await database.disconnect();
-            return res.status(400).json({ message: 'Ya existe un producto con ese slug' });
+            return res.status(400).json({ message: 'A product with this slug already exists' });
         }
 
         const product = new ProductModel(req.body);
@@ -122,11 +102,10 @@ const createProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
 
         res.status(201).json(product);
 
-
     } catch (error) {
         console.log(error);
         await database.disconnect();
-        return res.status(400).json({ message: 'Revisar logs del servidor' });
+        return res.status(400).json({ message: 'Check the server console' });;
     }
 
 }
