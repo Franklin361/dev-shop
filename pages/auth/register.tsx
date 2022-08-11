@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { devShopApi } from "../../api";
 import { AuthLayout } from "../../components"
 import { isEmail } from "../../utils";
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from "../../context";
 import { getSession, signIn } from "next-auth/react";
 
@@ -18,16 +18,22 @@ const RegisterPage = () => {
 
     const router = useRouter()
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-
+    const [error, setError] = useState('')
     const { registerUser } = useContext(AuthContext)
 
     const onSuccess = async ({ email, name, password }: FormData) => {
         const isRegisterCorrect = await registerUser(email, password, name)
-        if (isRegisterCorrect.hasError) return alert(isRegisterCorrect.msg)
+        if (isRegisterCorrect.hasError) {
+            setError(isRegisterCorrect.msg!)
+            setTimeout(() => {
+                setError('')
+            }, 5000);
+            return
+        }
 
-        // const destination = router.query.p?.toString() || '/'
-        // router.replace(destination)
-        await signIn('credentials', { email, password })
+        await signIn('credentials', { email, password, redirect: false })
+        const destination = router.query.p?.toString() || '/'
+        router.replace(destination)
     }
 
     const handleGoToLogin = () => {
@@ -41,6 +47,7 @@ const RegisterPage = () => {
             <h1 className="text-5xl font-extrabold text-center my-5">Sign Up</h1>
             <section>
                 <form onSubmit={handleSubmit(onSuccess)} className="flex flex-col max-w-xl mx-auto gap-5 shadow-black/60 shadow-2xl md:p-10 p-2 rounded-xl bg-base-300">
+                    {error && <div className="bg-red-500 text-center rounded-full p-1 font-bold center">{error}</div>}
                     <div>
                         <label htmlFor="" className="mb-2 block font-bold">Full Name</label>
                         <input

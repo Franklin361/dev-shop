@@ -53,9 +53,9 @@ export const Drawer = ({ children }: Props) => {
                     {
                         isLoggedIn && user?.role === 'client' && <>
 
-                            <li className=" mb-2">
+                            {/* <li className=" mb-2">
                                 <a className={`${asPath === '' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => { }}><Icon className="text-xl" name="profile" />Profile ( {user?.name} )</a>
-                            </li>
+                            </li> */}
                             <li className=" mb-2">
                                 <a className={`${asPath === '/order/history' ? 'bg-primary pointer-events-none text-black' : ''}`} onClick={() => push('/order/history')}><Icon className="text-xl" name="order" />My orders</a>
                             </li>

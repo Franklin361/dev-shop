@@ -30,8 +30,13 @@ const LoginPage = () => {
 
     const onSuccess = async ({ email, password }: FormData) => {
         const data = await signIn('credentials', { email, password, redirect: false })
-        console.log(data)
-        if (data?.ok) return router.replace('/')
+
+        if (data?.ok) {
+            const destination = router.query.p?.toString() || '/'
+            router.replace(destination)
+            return
+        }
+
         if (data?.error === 'CredentialsSignin') {
             setError('Incorrect credentials')
             setTimeout(() => {
