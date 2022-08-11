@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 import { useContext, useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { devShopApi } from "../../api";
-import { AuthLayout } from "../../components"
+import { AuthLayout, Icon } from "../../components"
 import { AuthContext } from "../../context";
 import { isEmail } from "../../utils";
 
@@ -17,6 +17,8 @@ const LoginPage = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
+    const [error, setError] = useState('')
+
     const [providers, setProviders] = useState<any>()
 
     useEffect(() => {
@@ -27,7 +29,15 @@ const LoginPage = () => {
 
 
     const onSuccess = async ({ email, password }: FormData) => {
-        await signIn('credentials', { email, password })
+        const data = await signIn('credentials', { email, password, redirect: false })
+        console.log(data)
+        if (data?.ok) return router.replace('/')
+        if (data?.error === 'CredentialsSignin') {
+            setError('Incorrect credentials')
+            setTimeout(() => {
+                setError('')
+            }, 5000);
+        }
     }
 
     const handleGoToRegister = () => {
@@ -44,6 +54,7 @@ const LoginPage = () => {
                     className="flex flex-col max-w-xl mx-auto gap-5 shadow-black/60 shadow-2xl md:p-10 p-2 rounded-xl bg-base-300"
                     onSubmit={handleSubmit(onSuccess)}
                 >
+                    {error && <div className="bg-red-500 text-center rounded-full p-1 font-bold center gap-2"> <Icon name="close" className="text-xl" /> {error}</div>}
                     <div>
                         <label htmlFor="" className="mb-2 block font-bold">E-mail</label>
                         <input
