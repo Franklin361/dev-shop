@@ -1,11 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { OrderModel, ProductModel, UserModel } from '../../../models'
 import { IDashboard } from '../../../interfaces'
+import { database } from '../../../database'
 
 type Data = IDashboard
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-
+    await database.connect()
     const [
         numberOfOrders,
         paidOrders,
@@ -21,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         ProductModel.find({ inStock: 0 }).count(),
         ProductModel.find({ inStock: { $lte: 10 } }).count(),
     ])
-
+    await database.disconnect()
 
     return res.json({
         numberOfOrders,
