@@ -1,7 +1,7 @@
 import { NextPage, GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { AdminLayout, CustomInput, CustomTextArea, HeaderAdmin, Icon, ImagesForm, InputGroup, Loading, TagsForm } from "../../../components"
+import { AdminLayout, CustomInput, CustomTextArea, HeaderAdmin, Icon, ImageForm, InputGroup, Loading, TagsForm } from "../../../components"
 import { dbProducts } from '../../../database';
 import { IProduct, ISize } from "../../../interfaces";
 import { ProductModel } from '../../../models';
@@ -238,7 +238,7 @@ const ProductAdminPage: NextPage<Props> = ({ product }) => {
             {
               isSavingImages && <Loading label='Uploading image' />
             }
-            <ImagesForm
+            <ImageForm
               images={getValues('images') || []}
               onDeleteImage={onDeleteImage}
               onFilesSelected={onFilesSelected}

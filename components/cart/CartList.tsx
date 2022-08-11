@@ -42,7 +42,7 @@ export const CartList = ({ isEdit = false, products }: Props) => {
 
                                 <Image
                                     onClick={() => router.push(`/product/${product.slug}`)}
-                                    src={`/products/${product.image}`}
+                                    src={`${product.image}`}
                                     layout="fill"
                                     className="rounded object-cover cursor-pointer"
                                 />

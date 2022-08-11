@@ -39,7 +39,7 @@ const OrdersPage = () => {
                                 </div>
                                 <div className="flex md:items-start items-center flex-row gap-2">
                                     <span>This orders is:</span>
-                                    <div className="badge badge-success badge-outline badge-lg">
+                                    <div className={`badge badge-${order.isPaid ? 'success' : 'error'} badge-outline badge-lg`}>
                                         {order.isPaid ? 'Paid' : 'Not Paid'}
                                     </div>
                                 </div>

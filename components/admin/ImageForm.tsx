@@ -7,7 +7,7 @@ interface IImagesForm {
     images: string[]
 }
 
-export const ImagesForm = forwardRef<HTMLInputElement, IImagesForm>(({ images = [], onDeleteImage, onFilesSelected }, ref) => {
+const ImagesForm = forwardRef<HTMLInputElement, IImagesForm>(({ images = [], onDeleteImage, onFilesSelected }, ref) => {
 
     return (
 
@@ -49,4 +49,5 @@ export const ImagesForm = forwardRef<HTMLInputElement, IImagesForm>(({ images = 
 
     )
 })
-
+ImagesForm.displayName = 'ImagesForm';
+export default ImagesForm
