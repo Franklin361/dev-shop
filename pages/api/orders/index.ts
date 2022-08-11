@@ -22,9 +22,10 @@ async function createOrder(req: NextApiRequest, res: NextApiResponse<Data>) {
 
     const productsIDs = orderItems.map(item => item._id)
 
-    const dbProduct = await ProductModel.find({ _id: { $in: productsIDs } })
-
     try {
+        await database.connect();
+
+        const dbProduct = await ProductModel.find({ _id: { $in: productsIDs } })
 
         const subtotal = orderItems.reduce((prev, current) => {
             const currentPrice = dbProduct.find(prod => prod.id === current._id)!.price
@@ -54,7 +55,7 @@ async function createOrder(req: NextApiRequest, res: NextApiResponse<Data>) {
         console.log(error)
         return res.status(400).json({ message: (error as Error).message || 'Check server logs' })
     } finally {
-        await database.connect();
+        await database.disconnect();
     }
 }
 
