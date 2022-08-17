@@ -36,7 +36,6 @@ const LoginPage = () => {
             const data = await signIn('credentials', { email, password, redirect: false })
             console.log(data)
             if (data?.ok) {
-                // const destination = router.query.p?.toString() || '/'
                 return router.reload()
             }
 
