@@ -31,20 +31,25 @@ const LoginPage = () => {
 
 
     const onSuccess = async ({ email, password }: FormData) => {
-        setLoading(true)
-        const data = await signIn('credentials', { email, password, redirect: false })
-        setLoading(false)
-        if (data?.ok) {
-            const destination = router.query.p?.toString() || '/'
-            router.replace(destination)
-            return
-        }
+        try {
+            setLoading(true)
+            const data = await signIn('credentials', { email, password, redirect: false })
+            if (data?.ok) {
+                const destination = router.query.p?.toString() || '/'
+                return router.replace(destination)
+            }
 
-        if (data?.error === 'CredentialsSignin') {
-            setError('Incorrect credentials')
-            setTimeout(() => {
-                setError('')
-            }, 5000);
+            if (data?.error === 'CredentialsSignin') {
+                setError('Incorrect credentials')
+                setTimeout(() => {
+                    setError('')
+                }, 5000);
+            }
+        } catch (error) {
+            console.log(error)
+            // router.reload()
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -64,7 +69,7 @@ const LoginPage = () => {
                 >
                     {error && <div className="bg-red-500 text-center rounded-full p-1 font-bold center gap-2"> <Icon name="close" className="text-xl" /> {error}</div>}
                     {
-                        isLoading && <div className="w-full flex justify-center items-center scale-75"><Loading center /></div>
+                        isLoading && <div className="w-full bg-warning text-black rounded-full font-bold flex justify-center items-center">Checking credentials...</div>
                     }
                     <div>
                         <label htmlFor="" className="mb-2 block font-bold">E-mail</label>
@@ -101,13 +106,13 @@ const LoginPage = () => {
                         }
                     </div>
                     <div className="flex w-full  mt-5">
-                        <button className="btn flex-1 btn-accent" type="submit">Log in</button>
+                        <button disabled={isLoading} className="btn flex-1 btn-accent" type="submit">Log in</button>
                         <div className="divider divider-horizontal">OR</div>
                         {
                             providers && Object.values(providers).map((provider: any) => {
                                 if (provider.id === 'credentials') return <div key='credentials' />
                                 return (
-                                    <button className="btn flex-1" type="button" key={provider.id} onClick={() => signIn(provider.id)}>{provider.name}</button>
+                                    <button disabled={isLoading} className="btn flex-1" type="button" key={provider.id} onClick={() => signIn(provider.id)}>{provider.name}</button>
                                 )
                             })
                         }
