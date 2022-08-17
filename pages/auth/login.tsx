@@ -49,7 +49,7 @@ const LoginPage = () => {
             }
         } catch (error) {
             console.log(error)
-            // router.reload()
+            router.reload()
         } finally {
             setLoading(false)
         }
