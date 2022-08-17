@@ -36,9 +36,8 @@ const LoginPage = () => {
             const data = await signIn('credentials', { email, password, redirect: false })
             console.log(data)
             if (data?.ok) {
-                const destination = router.query.p?.toString() || '/'
-                console.log({ destination })
-                return router.replace(destination)
+                // const destination = router.query.p?.toString() || '/'
+                return router.reload()
             }
 
             if (data?.error === 'CredentialsSignin') {
