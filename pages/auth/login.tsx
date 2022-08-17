@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 import { useContext, useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { devShopApi } from "../../api";
-import { AuthLayout, Icon } from "../../components"
+import { AuthLayout, Icon, Loading } from "../../components"
 import { AuthContext } from "../../context";
 import { isEmail } from "../../utils";
 
@@ -19,6 +19,8 @@ const LoginPage = () => {
 
     const [error, setError] = useState('')
 
+    const [isLoading, setLoading] = useState(false)
+
     const [providers, setProviders] = useState<any>()
 
     useEffect(() => {
@@ -29,8 +31,9 @@ const LoginPage = () => {
 
 
     const onSuccess = async ({ email, password }: FormData) => {
+        setLoading(true)
         const data = await signIn('credentials', { email, password, redirect: false })
-
+        setLoading(false)
         if (data?.ok) {
             const destination = router.query.p?.toString() || '/'
             router.replace(destination)
@@ -60,6 +63,9 @@ const LoginPage = () => {
                     onSubmit={handleSubmit(onSuccess)}
                 >
                     {error && <div className="bg-red-500 text-center rounded-full p-1 font-bold center gap-2"> <Icon name="close" className="text-xl" /> {error}</div>}
+                    {
+                        isLoading && <div className="w-full flex justify-center items-center scale-75"><Loading center /></div>
+                    }
                     <div>
                         <label htmlFor="" className="mb-2 block font-bold">E-mail</label>
                         <input
