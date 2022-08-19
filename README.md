@@ -1,34 +1,91 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Dev Shop 🛍️
+**Online store to buy things related to web development.**
 
-## Getting Started
+![Demo](https://res.cloudinary.com/dnxchppfm/image/upload/v1660876413/franklin-page/devshop_v1akni.png)
 
-First, run the development server:
+&nbsp;
 
-```bash
-npm run dev
-# or
-yarn dev
+## Features ⚙️
+### **Client**
+1. Login.
+2. Create an account.
+3. Log out.
+4. GitHub authentication.
+5. Private and public paths.
+6. View products.
+7. Filter products by genre.
+8. Sidebar .
+9. Add products to the shopping cart.
+10. Remove products from shopping cart.
+11. Confirm order.
+12. Pay the order with PayPal payment method.
+13. View order history.
+### **Admin**
+1. Administrative Dashboard.
+2. Edit user roles.
+3. Create products.
+4. Edit products.
+5. View history of all orders for all users.
+
+&nbsp;
+
+## Main Technologies 🧪
+
+- **Next JS**.
+- **TypeScript** .
+- **Zustand** (State management).
+- **DaisyUI** (Component library).
+- **Cloudinary** (Manage images).
+- **Next Auth** (Manage Authentication).
+- **PayPal** (Method of payment).
+- **Heroku** (To deploy the app).
+- **Mongoose** (ORM for mongo db).
+
+&nbsp;
+
+
+## **Installation 🧰**
+
+1. Clone the repository (you need to have [Git](https://git-scm.com) installed).
+
+```shell
+    git clone https://github.com/Franklin361/dev-shop
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2.  Install dependencies of the project.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```shell
+    npm install
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+3. Before running the development server, you need to...
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Create an `.env` file in the root of the project and set the following value:
+    ```
+    MONGO_URL=
+    
+    NEXT_PUBLIC_RATE=
+    NEXTAUTH_SECRET=
 
-## Learn More
+    GITHUB_ID=
+    GITHUB_SECRET=
 
-To learn more about Next.js, take a look at the following resources:
+    NEXT_PUBLIC_PAYPAL_CLIENT_ID=
+    PAYPAL_SECRET=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    PAYPAL_OAUTH_URL=
+    PAYPAL_ORDERS_URL=
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+    CLOUDINARY_URL=
+    ```
 
-## Deploy on Vercel
+4. Run the project.
+```shell
+    npm run dev
+```
+&nbsp;
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## **Demo ⛓️**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[https://dev-shop-fml.herokuapp.com](https://dev-shop-fml.herokuapp.com/)
+
