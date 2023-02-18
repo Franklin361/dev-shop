@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import { getProviders, getSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -170,8 +171,6 @@ const LoginPage = ({ providers }: any) => {
   );
 };
 export default LoginPage;
-
-import { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session: any = await getSession({ req: ctx.req });
