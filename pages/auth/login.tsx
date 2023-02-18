@@ -187,7 +187,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     };
   }
-
+  console.log(providers);
   return {
     props: { providers },
   };
