@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { getProviders, getSession, signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { AuthLayout, Icon } from '../../components';
 import { isEmail } from '../../utils';
@@ -11,9 +11,8 @@ type FormData = {
   password: string;
 };
 
-const LoginPage = ({ providers }: any) => {
+const LoginPage = () => {
   const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -21,8 +20,15 @@ const LoginPage = ({ providers }: any) => {
   } = useForm<FormData>();
 
   const [error, setError] = useState('');
-
   const [isLoading, setLoading] = useState(false);
+  const [providers, setProviders] = useState<any>({});
+
+  useEffect(() => {
+    getProviders().then((prov) => {
+      console.log({ providers: prov });
+      setProviders(prov);
+    });
+  }, []);
 
   const onSuccess = async ({ email, password }: FormData) => {
     try {
@@ -174,7 +180,7 @@ export default LoginPage;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session: any = await getSession({ req: ctx.req });
-  const providers = await getProviders();
+
   const { p = '/' } = ctx.query;
 
   if (session) {
@@ -186,8 +192,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       },
     };
   }
-  console.log(providers);
+
   return {
-    props: { providers },
+    props: {},
   };
 };
