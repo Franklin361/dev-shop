@@ -38,7 +38,7 @@
 - **Cloudinary** (Manage images).
 - **Next Auth** (Manage Authentication).
 - **PayPal** (Method of payment).
-- **Heroku** (To deploy the app).
+- **Vercel** (To deploy the app).
 - **Mongoose** (ORM for mongo db).
 
 &nbsp;
