@@ -26,7 +26,6 @@ const LoginPage = () => {
   useEffect(() => {
     getProviders().then((prov) => {
       console.log({ providers: prov });
-      setProviders(prov);
     });
   }, []);
 
