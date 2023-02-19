@@ -1,0 +1,1 @@
+export { default as devShopApi } from './axiosConfigApi'

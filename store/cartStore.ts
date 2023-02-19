@@ -5,7 +5,7 @@ import Cookie from 'js-cookie'
 import { calculateOrderSummary } from '../utils'
 
 import { ICartProduct, InfoAddress, IOrder, ISize } from '../interfaces'
-import { devShopApi } from '../api'
+import { devShopApi } from '../services'
 import axios from 'axios';
 
 interface CartState {
