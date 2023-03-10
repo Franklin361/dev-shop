@@ -25,7 +25,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     getProviders().then((prov) => {
-      console.log({ providers: prov });
+      setProviders(prov);
     });
   }, []);
 
@@ -97,9 +97,8 @@ const LoginPage = () => {
             <input
               type='email'
               placeholder='example@example.com'
-              className={`input ${
-                errors.email ? 'input-error' : 'input-bordered'
-              } text-xl w-full`}
+              className={`input ${errors.email ? 'input-error' : 'input-bordered'
+                } text-xl w-full`}
               {...register('email', {
                 required: 'This field is required',
                 validate: isEmail,
@@ -119,9 +118,8 @@ const LoginPage = () => {
             <input
               type='password'
               placeholder='****'
-              className={`input ${
-                errors.password ? 'input-error' : 'input-bordered'
-              } text-xl w-full`}
+              className={`input ${errors.password ? 'input-error' : 'input-bordered'
+                } text-xl w-full`}
               {...register('password', {
                 required: 'This field is required',
                 minLength: { value: 6, message: 'Min. 6 characters' },
